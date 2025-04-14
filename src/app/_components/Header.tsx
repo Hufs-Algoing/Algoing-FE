@@ -6,14 +6,14 @@ import { usePathname } from "next/navigation";
 const menuItems = [
   { name: "추천 문제", path: "/recommend" },
   { name: "리뷰 커뮤니티", path: "/community" },
-  { name: "AI 리뷰", path: "/ai-review" },
+  { name: "AI 리뷰", path: "/review-list" },
 ];
 
 export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="flex justify-between items-center px-24 py-4 shadow-sm bg-white">
+    <header className="fixed top-0 z-50 w-full flex justify-between items-center px-24 py-4 shadow-sm bg-white">
       <div className="flex items-center gap-10">
         <Link href="/">
           <img src="/logo.png" alt="ALGOING Logo" className="h-8" />

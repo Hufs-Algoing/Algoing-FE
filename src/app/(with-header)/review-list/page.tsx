@@ -1,12 +1,9 @@
-import Header from "./_components/Header";
-import "./globals.css";
-
-export default function Home() {
+export default function ReviewList() {
   return (
     <>
       {" "}
       <div className="flex w-full h-screen items-center justify-center">
-        임시 홈
+        AI 리뷰 페이지
       </div>
     </>
   );
