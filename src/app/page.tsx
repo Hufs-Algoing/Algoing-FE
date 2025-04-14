@@ -6,7 +6,7 @@ export default function Home() {
     <>
       {" "}
       <div className="flex w-full h-screen items-center justify-center">
-        sAlgoing Homes
+        임시 홈
       </div>
     </>
   );

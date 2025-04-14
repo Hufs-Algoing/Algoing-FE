@@ -25,7 +25,9 @@ export default function Header() {
               key={item.path}
               href={item.path}
               className={`text-sm font-medium ${
-                pathname === item.path ? "text-primary" : "text-gray-700"
+                pathname === item.path
+                  ? "text-primary font-bold"
+                  : "text-gray-700"
               } hover:text-primary hover:font-bold transition`}
             >
               {item.name}
