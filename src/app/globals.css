@@ -1,7 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@font-face {
+  font-family: "PretendardVariable";
+  src: url("../../public/font/PretendardVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;
