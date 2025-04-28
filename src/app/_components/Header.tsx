@@ -21,7 +21,6 @@ export default function Header() {
       setIsDarkMode(true);
     }
 
-    // 다크모드 상태를 실시간으로 감지하기 위해 MutationObserver 사용
     const observer = new MutationObserver(() => {
       setIsDarkMode(document.documentElement.classList.contains("dark"));
     });
@@ -35,9 +34,9 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 z-50 w-full flex justify-between items-center px-24 py-4 shadow-sm bg-white dark:bg-neutral-900 transition-colors">
-      <div className="flex items-center gap-10">
-        <Link href="/">
+    <header className="fixed top-0 z-50 w-full flex justify-between items-center px-8 md:px-24 py-4 shadow-sm bg-white dark:bg-neutral-900 transition-colors backdrop-blur-md">
+      <div className="flex items-center gap-12">
+        <Link href="/" className="hover:opacity-80 transition">
           <img
             src={isDarkMode ? "/DarkModeLogo.png" : "/LightModeLogo.png"}
             alt="ALGOING Logo"
@@ -45,16 +44,16 @@ export default function Header() {
           />
         </Link>
 
-        <nav className="flex gap-6">
+        <nav className="flex gap-8">
           {menuItems.map((item) => (
             <Link
               key={item.path}
               href={item.path}
-              className={`text-sm font-medium ${
+              className={`text-sm font-semibold transition ${
                 pathname === item.path
-                  ? "text-primary font-bold dark:text-gray-300 dark:font-bold"
+                  ? "text-primary dark:text-primary font-bold"
                   : "text-gray-700 dark:text-gray-300"
-              } hover:text-primary hover:font-bold transition`}
+              } hover:text-primary dark:hover:text-primary`}
             >
               {item.name}
             </Link>
@@ -62,18 +61,22 @@ export default function Header() {
         </nav>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4">
         <DarkModeToggle />
-        <input
-          type="text"
-          placeholder="문제번호, 제목, 키워드"
-          className="text-sm px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none"
-        />
-        <img
-          src="/profile-icon.png"
-          alt="프로필"
-          className="w-8 h-8 rounded-full border-2 border-yellow-300"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="문제 번호, 제목, 키워드"
+            className="text-sm px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-neutral-800 text-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary transition w-48 md:w-60"
+          />
+        </div>
+        <Link href="/profile" className="hover:opacity-80 transition">
+          <img
+            src="/profile-icon.png"
+            alt="프로필"
+            className="w-9 h-9 rounded-full border-2 border-yellow-300 shadow-md"
+          />
+        </Link>
       </div>
     </header>
   );
