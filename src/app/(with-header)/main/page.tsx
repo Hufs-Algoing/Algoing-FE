@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ContributionCalendar from "./components/Calendar";
 import Progress from "./components/Progress";
 import RecommendedProblems from "./components/Recommend";
@@ -15,8 +16,13 @@ export default function UserDashboard() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-16">
-        <div className="w-20 h-20 rounded-full border-4 border-white dark:border-neutral-700 shadow-md bg-gray-200 dark:bg-neutral-700 shrink-0" />
-
+        <Link href="/profile" className="w-20 h-20">
+          <img
+            src="/profile5.png"
+            alt="프로필"
+            className="w-20 h-20 rounded-full  dark:border-neutral-700 shadow-md bg-gray-black dark:bg-neutral-700 shrink-0 object-cover"
+          />
+        </Link>
         <div className="flex-1 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2">
             <h2 className="text-2xl font-bold">ahr0205</h2>

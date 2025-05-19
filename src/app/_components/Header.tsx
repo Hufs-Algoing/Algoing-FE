@@ -72,9 +72,9 @@ export default function Header() {
         </div>
         <Link href="/profile" className="hover:opacity-80 transition">
           <img
-            src="/profile-icon.png"
+            src="/profile2.jpg"
             alt="프로필"
-            className="w-9 h-9 rounded-full border-2 border-yellow-300 shadow-md"
+            className="w-9 h-9 rounded-full border-2 shadow-md"
           />
         </Link>
       </div>

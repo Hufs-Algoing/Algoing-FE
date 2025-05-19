@@ -107,8 +107,7 @@ export default function ContributionCalendar({
                   "aspect-square rounded-md transition-all duration-200",
                   day ? getColorClass(day.count) : "opacity-0"
                 )}
-              >
-              </div>
+              ></div>
             ))}
           </div>
         ))}
