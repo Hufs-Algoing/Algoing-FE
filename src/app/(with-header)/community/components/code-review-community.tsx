@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  Search,
   User,
   Star,
   ChevronLeft,
@@ -14,9 +13,6 @@ import {
   Filter,
   Clock,
   MessageSquare,
-  Eye,
-  ThumbsUp,
-  Shield,
   Zap,
   Award,
 } from "lucide-react";
@@ -30,10 +26,7 @@ interface CodeReviewPost {
   author: string;
   authorLevel?: number;
   date: string;
-  views: number;
   comments: number;
-  likes: number;
-  isNotice?: boolean;
   isHot?: boolean;
   difficulty?: number;
   tags?: string[];
@@ -49,7 +42,6 @@ export default function EnhancedCodeReviewCommunity() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<"recent" | "popular">("recent");
 
   // Mock data for code review posts
   const mockPosts: CodeReviewPost[] = [
@@ -59,10 +51,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "admin",
       authorLevel: 10,
       date: "2025.03.05",
-      views: 1245,
       comments: 32,
-      likes: 87,
-      isNotice: true,
       isBookmarked: true,
       hasAttachment: true,
       previewText: "중요한 공지사항입니다. 모든 사용자는 필독해주세요.",
@@ -73,10 +62,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "admin",
       authorLevel: 10,
       date: "2025.03.05",
-      views: 982,
       comments: 18,
-      likes: 56,
-      isNotice: true,
       hasAttachment: true,
     },
     {
@@ -85,10 +71,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "admin",
       authorLevel: 10,
       date: "2025.03.05",
-      views: 756,
       comments: 12,
-      likes: 43,
-      isNotice: true,
     },
     {
       id: 4,
@@ -96,9 +79,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "coder123",
       authorLevel: 5,
       date: "2025.03.05",
-      views: 432,
       comments: 28,
-      likes: 76,
       isHot: true,
       difficulty: 3,
       tags: ["알고리즘", "다익스트라"],
@@ -114,9 +95,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "user456",
       authorLevel: 3,
       date: "2025.03.05",
-      views: 321,
       comments: 8,
-      likes: 24,
       difficulty: 3,
       tags: ["이진탐색"],
       status: "pending",
@@ -128,9 +107,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "dev789",
       authorLevel: 4,
       date: "2025.03.05",
-      views: 287,
       comments: 15,
-      likes: 32,
       status: "solved",
       hasCode: true,
     },
@@ -140,9 +117,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "coder456",
       authorLevel: 2,
       date: "2025.03.05",
-      views: 198,
       comments: 7,
-      likes: 18,
       hasCode: true,
     },
     {
@@ -151,9 +126,7 @@ export default function EnhancedCodeReviewCommunity() {
       author: "programmer123",
       authorLevel: 1,
       date: "2025.03.05",
-      views: 176,
       comments: 5,
-      likes: 12,
       hasCode: true,
     },
   ];
@@ -214,42 +187,16 @@ export default function EnhancedCodeReviewCommunity() {
                 </motion.button>
               ))}
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setSortBy("recent")}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm ${
-                  sortBy === "recent"
-                    ? "text-indigo-600 bg-indigo-50"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <Clock className="h-4 w-4" />
-                <span>최신순</span>
-              </button>
-              <button
-                onClick={() => setSortBy("popular")}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm ${
-                  sortBy === "popular"
-                    ? "text-indigo-600 bg-indigo-50"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <ThumbsUp className="h-4 w-4" />
-                <span>인기순</span>
-              </button>
-            </div>
           </div>
         </div>
 
         {/* Post List */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-200 text-sm font-medium text-gray-600">
-            <div className="col-span-7">제목</div>
+            <div className="col-span-9">제목</div>
             <div className="col-span-1 text-center">작성자</div>
             <div className="col-span-1 text-center">날짜</div>
-            <div className="col-span-1 text-center">조회</div>
             <div className="col-span-1 text-center">댓글</div>
-            <div className="col-span-1 text-center">추천</div>
           </div>
 
           <div className="divide-y divide-gray-100">
@@ -262,16 +209,10 @@ export default function EnhancedCodeReviewCommunity() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2, delay: index * 0.05 }}
                   whileHover={{ backgroundColor: "rgba(249, 250, 251, 0.8)" }}
-                  className={`grid grid-cols-12 gap-4 px-6 py-4 items-center ${post.isNotice ? "bg-indigo-50/30" : ""}`}
+                  className="grid grid-cols-12 gap-4 px-6 py-4 items-center"
                 >
-                  <div className="col-span-7">
+                  <div className="col-span-9">
                     <div className="flex items-center flex-wrap gap-1.5">
-                      {post.isNotice && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                          <Shield className="h-3 w-3 mr-1" />
-                          공지
-                        </span>
-                      )}
                       {post.isHot && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                           <Zap className="h-3 w-3 mr-1" />
@@ -366,18 +307,8 @@ export default function EnhancedCodeReviewCommunity() {
                   </div>
 
                   <div className="col-span-1 text-center text-sm text-gray-500 flex items-center justify-center">
-                    <Eye className="h-3 w-3 mr-1 text-gray-400" />
-                    {post.views}
-                  </div>
-
-                  <div className="col-span-1 text-center text-sm text-gray-500 flex items-center justify-center">
                     <MessageSquare className="h-3 w-3 mr-1 text-gray-400" />
                     {post.comments}
-                  </div>
-
-                  <div className="col-span-1 text-center text-sm text-gray-500 flex items-center justify-center">
-                    <ThumbsUp className="h-3 w-3 mr-1 text-gray-400" />
-                    {post.likes}
                   </div>
                 </motion.div>
               ))}

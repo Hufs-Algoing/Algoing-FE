@@ -4,8 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search,
-  User,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
@@ -17,10 +15,6 @@ import {
   CheckCircle,
   XCircle,
   Calendar,
-  Sparkles,
-  Eye,
-  MessageSquare,
-  ThumbsUp,
   Code,
   Hash,
   Tag,
@@ -37,9 +31,6 @@ interface AIReview {
   baekjoonTier?: string;
   problemNumber?: string;
   algorithmType?: string;
-  commentCount?: number;
-  likeCount?: number;
-  isNew?: boolean;
   isHighlighted?: boolean;
   timeComplexity?: string;
   spaceComplexity?: string;
@@ -49,7 +40,6 @@ export default function AICodeReviewList() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<"recent" | "popular">("recent");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
   // Mock data for AI reviews
@@ -62,9 +52,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "골드 3",
       problemNumber: "1753",
       algorithmType: "다익스트라",
-      commentCount: 7,
-      likeCount: 12,
-      isNew: true,
       timeComplexity: "O(E log V)",
       spaceComplexity: "O(V + E)",
     },
@@ -76,8 +63,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "실버 1",
       problemNumber: "1920",
       algorithmType: "이분 탐색",
-      commentCount: 5,
-      likeCount: 8,
       timeComplexity: "O(n log n)",
       spaceComplexity: "O(n)",
     },
@@ -89,8 +74,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "플래티넘 5",
       problemNumber: "1786",
       algorithmType: "KMP",
-      commentCount: 14,
-      likeCount: 23,
       timeComplexity: "O(n + m)",
       spaceComplexity: "O(m)",
     },
@@ -104,8 +87,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "골드 4",
       problemNumber: "1238",
       algorithmType: "다익스트라",
-      commentCount: 9,
-      likeCount: 17,
       isHighlighted: true,
       timeComplexity: "O(E log V)",
       spaceComplexity: "O(V + E)",
@@ -118,8 +99,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "실버 2",
       problemNumber: "1654",
       algorithmType: "이분 탐색",
-      commentCount: 3,
-      likeCount: 5,
     },
     {
       id: 6,
@@ -130,8 +109,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "골드 5",
       problemNumber: "7576",
       algorithmType: "BFS",
-      commentCount: 6,
-      likeCount: 11,
       timeComplexity: "O(n × m)",
       spaceComplexity: "O(n × m)",
     },
@@ -143,8 +120,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "실버 3",
       problemNumber: "1463",
       algorithmType: "DP",
-      commentCount: 2,
-      likeCount: 4,
     },
     {
       id: 8,
@@ -154,8 +129,6 @@ export default function AICodeReviewList() {
       baekjoonTier: "골드 2",
       problemNumber: "1167",
       algorithmType: "트리, DFS",
-      commentCount: 8,
-      likeCount: 15,
       timeComplexity: "O(V + E)",
       spaceComplexity: "O(V + E)",
     },
@@ -188,11 +161,8 @@ export default function AICodeReviewList() {
     return true;
   });
 
+  // Default to recent sorting
   const sortedReviews = [...filteredReviews].sort((a, b) => {
-    if (sortBy === "popular") {
-      return (b.likeCount || 0) - (a.likeCount || 0);
-    }
-    // Default to recent
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
@@ -294,28 +264,10 @@ export default function AICodeReviewList() {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setSortBy("recent")}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm ${
-                  sortBy === "recent"
-                    ? "text-indigo-600 bg-indigo-50"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
+              <div className="flex items-center gap-1 px-3 py-1.5 rounded-md text-sm text-indigo-600 bg-indigo-50">
                 <Calendar className="h-4 w-4" />
                 <span>최신순</span>
-              </button>
-              <button
-                onClick={() => setSortBy("popular")}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm ${
-                  sortBy === "popular"
-                    ? "text-indigo-600 bg-indigo-50"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <ThumbsUp className="h-4 w-4" />
-                <span>인기순</span>
-              </button>
+              </div>
               <div className="h-6 border-l border-gray-300 mx-1"></div>
               <button
                 onClick={() => setViewMode("list")}
@@ -377,13 +329,11 @@ export default function AICodeReviewList() {
               className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6"
             >
               <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-200 text-sm font-medium text-gray-600">
-                <div className="col-span-4">제목</div>
+                <div className="col-span-6">제목</div>
                 <div className="col-span-1 text-center">문제 번호</div>
                 <div className="col-span-2 text-center">백준 티어</div>
                 <div className="col-span-2 text-center">알고리즘 유형</div>
                 <div className="col-span-1 text-center">상태</div>
-                <div className="col-span-1 text-center">반응</div>
-                <div className="col-span-1 text-center">보기</div>
               </div>
 
               <div className="divide-y divide-gray-100">
@@ -399,7 +349,7 @@ export default function AICodeReviewList() {
                         review.isHighlighted ? "bg-indigo-50/30" : ""
                       } hover:bg-gray-50 transition-colors duration-150`}
                     >
-                      <div className="col-span-4">
+                      <div className="col-span-6">
                         <div className="flex items-center flex-wrap gap-1.5">
                           {review.difficulty && (
                             <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-indigo-100 text-indigo-700 text-xs font-bold">
@@ -412,12 +362,6 @@ export default function AICodeReviewList() {
                           >
                             {review.title}
                           </Link>
-                          {review.isNew && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                              <Sparkles className="h-3 w-3 mr-1" />
-                              New
-                            </span>
-                          )}
                         </div>
 
                         {review.tags && review.tags.length > 0 && (
@@ -482,28 +426,6 @@ export default function AICodeReviewList() {
                               : "실패"}
                         </span>
                       </div>
-
-                      <div className="col-span-1 text-center">
-                        <div className="flex items-center justify-center gap-3">
-                          <span className="text-xs text-gray-500 flex items-center">
-                            <MessageSquare className="h-3 w-3 mr-1" />
-                            {review.commentCount}
-                          </span>
-                          <span className="text-xs text-gray-500 flex items-center">
-                            <ThumbsUp className="h-3 w-3 mr-1" />
-                            {review.likeCount}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="col-span-1 text-center">
-                        <Link
-                          href={`/ai-review/${review.id}`}
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                      </div>
                     </motion.div>
                   ))}
                 </AnimatePresence>
@@ -548,12 +470,6 @@ export default function AICodeReviewList() {
                             {review.title}
                           </h3>
                         </div>
-                        {review.isNew && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                            <Sparkles className="h-3 w-3 mr-1" />
-                            New
-                          </span>
-                        )}
                       </div>
 
                       <div className="flex flex-wrap gap-2 mb-3">
@@ -617,7 +533,7 @@ export default function AICodeReviewList() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <span
-                            className={`inline-flex items-center px-2 5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
                               review.status
                             )}`}
                           >
@@ -631,24 +547,6 @@ export default function AICodeReviewList() {
                           <span className="text-xs text-gray-500">
                             {review.date}
                           </span>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs text-gray-500 flex items-center">
-                            <MessageSquare className="h-3 w-3 mr-1" />
-                            {review.commentCount}
-                          </span>
-                          <span className="text-xs text-gray-500 flex items-center">
-                            <ThumbsUp className="h-3 w-3 mr-1" />
-                            {review.likeCount}
-                          </span>
-                          <Link
-                            href={`/ai-review/${review.id}`}
-                            className="inline-flex items-center justify-center px-2 py-1 rounded-md bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors text-xs"
-                          >
-                            <Eye className="h-3 w-3 mr-1" />
-                            보기
-                          </Link>
                         </div>
                       </div>
                     </div>
