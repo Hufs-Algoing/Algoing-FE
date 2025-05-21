@@ -8,7 +8,7 @@ import DarkModeToggle from "./DarkMode";
 const menuItems = [
   { name: "추천 문제", path: "/recommend" },
   { name: "리뷰 커뮤니티", path: "/community" },
-  { name: "AI 리뷰", path: "/review-list" },
+  { name: "AI 리뷰", path: "/ai-review" },
 ];
 
 export default function Header() {
