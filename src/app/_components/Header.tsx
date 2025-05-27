@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Search, Bell, Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkMode";
 import { motion, AnimatePresence } from "framer-motion";
-
 const menuItems = [
   { name: "추천 문제", path: "/recommend" },
   { name: "리뷰 커뮤니티", path: "/community" },
@@ -20,7 +19,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasNotification, setHasNotification] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
@@ -192,7 +191,7 @@ export default function Header() {
 
         {/* Profile */}
         <Link
-          href="/profile"
+          href="/mypage"
           className="relative group flex items-center justify-center hover:opacity-95 transition"
         >
           <motion.div
