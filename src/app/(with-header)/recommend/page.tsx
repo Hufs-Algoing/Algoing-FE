@@ -1,206 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Sparkles,
-  BookOpen,
-  Code,
-  TrendingUp,
-  Award,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Sparkles, BookOpen, Code, TrendingUp, Award } from "lucide-react";
 import Carousel from "./components/carousel";
 import ProblemCard from "./components/problem-card";
-interface RecommendationPageProps {
-  username: string;
+import {
+  recentCodeReviews,
+  recommendedProblems,
+  similarProblems,
+} from "@/app/_mock/recommend";
+
+interface RecommendationContentProps {
+  searchParams: Promise<{ username?: string }>;
 }
 
-export default function RecommendationPage({
-  username,
-}: RecommendationPageProps) {
+export default function RecommendationContent({
+  searchParams,
+}: RecommendationContentProps) {
   const [showSolved, setShowSolved] = useState(false);
+  const [username, setUsername] = useState<string>("사용자");
 
-  // Mock data for recommended problems
-  const recommendedProblems = [
-    {
-      id: 1,
-      title: "생일파티 길찾기",
-      level: 3,
-      tags: ["그래디"],
-      isSolved: false,
-    },
-    {
-      id: 2,
-      title: "생일파티 길찾기",
-      level: 3,
-      tags: [],
-      isSolved: false,
-    },
-    {
-      id: 3,
-      title: "미로 탈출하기",
-      level: 4,
-      tags: ["BFS", "그래프"],
-      isSolved: false,
-    },
-    {
-      id: 4,
-      title: "최단 경로 찾기",
-      level: 2,
-      tags: ["다익스트라"],
-      isSolved: false,
-    },
-    {
-      id: 5,
-      title: "트리 순회하기",
-      level: 3,
-      tags: ["트리", "DFS"],
-      isSolved: false,
-    },
-    {
-      id: 6,
-      title: "동전 교환 문제",
-      level: 2,
-      tags: ["DP", "그리디"],
-      isSolved: false,
-    },
-    {
-      id: 7,
-      title: "문자열 패턴 매칭",
-      level: 4,
-      tags: ["문자열", "KMP"],
-      isSolved: false,
-    },
-    {
-      id: 8,
-      title: "구간 합 구하기",
-      level: 1,
-      tags: ["누적합"],
-      isSolved: false,
-    },
-  ];
-
-  const similarProblems = [
-    {
-      id: 101,
-      title: "그래프 탐색 문제",
-      level: 3,
-      tags: ["DFS", "그래프"],
-      isSolved: false,
-    },
-    {
-      id: 102,
-      title: "최소 신장 트리",
-      level: 4,
-      tags: ["MST", "그래프"],
-      isSolved: true,
-    },
-    {
-      id: 103,
-      title: "위상 정렬",
-      level: 3,
-      tags: ["그래프", "위상정렬"],
-      isSolved: false,
-    },
-    {
-      id: 104,
-      title: "강한 연결 요소",
-      level: 5,
-      tags: ["그래프", "SCC"],
-      isSolved: true,
-    },
-    {
-      id: 105,
-      title: "네트워크 플로우",
-      level: 5,
-      tags: ["그래프", "플로우"],
-      isSolved: false,
-    },
-    {
-      id: 106,
-      title: "이분 매칭",
-      level: 4,
-      tags: ["그래프", "매칭"],
-      isSolved: false,
-    },
-    {
-      id: 107,
-      title: "최소 공통 조상",
-      level: 3,
-      tags: ["트리", "LCA"],
-      isSolved: true,
-    },
-    {
-      id: 108,
-      title: "세그먼트 트리",
-      level: 4,
-      tags: ["트리", "세그먼트 트리"],
-      isSolved: false,
-    },
-  ];
-
-  const recentCodeReviews = [
-    {
-      id: 201,
-      title: "다익스트라 알고리즘 최적화",
-      level: 3,
-      tags: ["다익스트라", "최적화"],
-      isSolved: true,
-    },
-    {
-      id: 202,
-      title: "BFS 구현 리팩토링",
-      level: 2,
-      tags: ["BFS", "리팩토링"],
-      isSolved: true,
-    },
-    {
-      id: 203,
-      title: "DP 접근법 개선",
-      level: 4,
-      tags: ["DP", "최적화"],
-      isSolved: false,
-    },
-    {
-      id: 204,
-      title: "그리디 알고리즘 분석",
-      level: 3,
-      tags: ["그리디", "분석"],
-      isSolved: true,
-    },
-    {
-      id: 205,
-      title: "이진 탐색 구현 개선",
-      level: 2,
-      tags: ["이진탐색", "최적화"],
-      isSolved: false,
-    },
-    {
-      id: 206,
-      title: "해시 테이블 충돌 해결",
-      level: 4,
-      tags: ["해시", "자료구조"],
-      isSolved: true,
-    },
-    {
-      id: 207,
-      title: "트리 순회 알고리즘 분석",
-      level: 3,
-      tags: ["트리", "분석"],
-      isSolved: false,
-    },
-    {
-      id: 208,
-      title: "문자열 매칭 최적화",
-      level: 4,
-      tags: ["문자열", "KMP"],
-      isSolved: true,
-    },
-  ];
+  // searchParams를 resolve하고 username 설정
+  useEffect(() => {
+    searchParams.then((params) => {
+      setUsername(params.username || "사용자");
+    });
+  }, [searchParams]);
 
   const filteredSimilarProblems = showSolved
     ? similarProblems

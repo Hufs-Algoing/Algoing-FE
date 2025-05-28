@@ -9,7 +9,6 @@ interface ProblemCardProps {
 }
 
 const ProblemCard: FC<ProblemCardProps> = ({
-  id,
   title,
   level,
   tags,

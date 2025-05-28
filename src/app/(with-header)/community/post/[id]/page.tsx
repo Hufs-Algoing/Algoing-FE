@@ -1,9 +1,10 @@
 import CodeReviewDetail from "../../components/code-reivew-detail";
 
-export default function CodeReviewDetailPage({
+export default async function CodeReviewDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  return <CodeReviewDetail postId={params.id} />;
+  const { id } = await params;
+  return <CodeReviewDetail postId={id} />;
 }
