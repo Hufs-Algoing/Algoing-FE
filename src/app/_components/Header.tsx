@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname} from "next/navigation";
 import { useEffect, useState } from "react";
 import { Search, Bell, Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkMode";
@@ -17,9 +17,8 @@ export default function Header() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [hasNotification, setHasNotification] = useState(true);
+  const [hasNotification, ] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
-  const router = useRouter();
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {

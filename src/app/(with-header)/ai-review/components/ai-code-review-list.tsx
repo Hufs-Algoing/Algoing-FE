@@ -39,7 +39,6 @@ interface AIReview {
 export default function AICodeReviewList() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
   // Mock data for AI reviews

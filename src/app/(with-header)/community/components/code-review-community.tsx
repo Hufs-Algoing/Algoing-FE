@@ -41,7 +41,6 @@ interface CodeReviewPost {
 export default function EnhancedCodeReviewCommunity() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
 
   // Mock data for code review posts
   const mockPosts: CodeReviewPost[] = [

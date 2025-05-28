@@ -1,28 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Sparkles,
-  BookOpen,
-  Code,
-  TrendingUp,
-  Award,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Sparkles, BookOpen, Code, TrendingUp, Award } from "lucide-react";
 import Carousel from "./components/carousel";
 import ProblemCard from "./components/problem-card";
-interface RecommendationPageProps {
-  username: string;
+
+interface RecommendationContentProps {
+  searchParams: Promise<{ username?: string }>;
 }
 
-export default function RecommendationPage({
-  username,
-}: RecommendationPageProps) {
+export default function RecommendationContent({
+  searchParams,
+}: RecommendationContentProps) {
   const [showSolved, setShowSolved] = useState(false);
+  const [username, setUsername] = useState<string>("사용자");
+
+  // searchParams를 resolve하고 username 설정
+  useEffect(() => {
+    searchParams.then((params) => {
+      setUsername(params.username || "사용자");
+    });
+  }, [searchParams]);
 
   // Mock data for recommended problems
   const recommendedProblems = [
