@@ -19,119 +19,12 @@ import {
   Hash,
   Tag,
 } from "lucide-react";
-
-// Types
-interface AIReview {
-  id: number;
-  title: string;
-  date: string;
-  status: "completed" | "in-progress" | "failed";
-  difficulty?: number;
-  tags?: string[];
-  baekjoonTier?: string;
-  problemNumber?: string;
-  algorithmType?: string;
-  isHighlighted?: boolean;
-  timeComplexity?: string;
-  spaceComplexity?: string;
-}
+import { mockReviews } from "@/app/_mock/ai-review";
 
 export default function AICodeReviewList() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
-
-  // Mock data for AI reviews
-  const mockReviews: AIReview[] = [
-    {
-      id: 1,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      date: "2025.03.05",
-      status: "completed",
-      baekjoonTier: "골드 3",
-      problemNumber: "1753",
-      algorithmType: "다익스트라",
-      timeComplexity: "O(E log V)",
-      spaceComplexity: "O(V + E)",
-    },
-    {
-      id: 2,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      date: "2025.03.05",
-      status: "completed",
-      baekjoonTier: "실버 1",
-      problemNumber: "1920",
-      algorithmType: "이분 탐색",
-      timeComplexity: "O(n log n)",
-      spaceComplexity: "O(n)",
-    },
-    {
-      id: 3,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      date: "2025.03.05",
-      status: "completed",
-      baekjoonTier: "플래티넘 5",
-      problemNumber: "1786",
-      algorithmType: "KMP",
-      timeComplexity: "O(n + m)",
-      spaceComplexity: "O(m)",
-    },
-    {
-      id: 4,
-      title: "생일파티 길찾기",
-      date: "2025.03.05",
-      status: "completed",
-      difficulty: 3,
-      tags: ["알고리즘", "그래프"],
-      baekjoonTier: "골드 4",
-      problemNumber: "1238",
-      algorithmType: "다익스트라",
-      isHighlighted: true,
-      timeComplexity: "O(E log V)",
-      spaceComplexity: "O(V + E)",
-    },
-    {
-      id: 5,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      date: "2025.03.05",
-      status: "failed",
-      baekjoonTier: "실버 2",
-      problemNumber: "1654",
-      algorithmType: "이분 탐색",
-    },
-    {
-      id: 6,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      date: "2025.03.05",
-      status: "completed",
-      difficulty: 3,
-      baekjoonTier: "골드 5",
-      problemNumber: "7576",
-      algorithmType: "BFS",
-      timeComplexity: "O(n × m)",
-      spaceComplexity: "O(n × m)",
-    },
-    {
-      id: 7,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      date: "2025.03.05",
-      status: "in-progress",
-      baekjoonTier: "실버 3",
-      problemNumber: "1463",
-      algorithmType: "DP",
-    },
-    {
-      id: 8,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      date: "2025.03.05",
-      status: "completed",
-      baekjoonTier: "골드 2",
-      problemNumber: "1167",
-      algorithmType: "트리, DFS",
-      timeComplexity: "O(V + E)",
-      spaceComplexity: "O(V + E)",
-    },
-  ];
 
   const filterOptions = [
     { id: "all", label: "전체", icon: <Filter className="h-4 w-4" /> },
@@ -160,7 +53,6 @@ export default function AICodeReviewList() {
     return true;
   });
 
-  // Default to recent sorting
   const sortedReviews = [...filteredReviews].sort((a, b) => {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });

@@ -18,117 +18,11 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CommunityHeader from "./community-header";
-
-// Types
-interface CodeReviewPost {
-  id: number;
-  title: string;
-  author: string;
-  authorLevel?: number;
-  date: string;
-  comments: number;
-  isHot?: boolean;
-  difficulty?: number;
-  tags?: string[];
-  status?: "pending" | "solved" | "in-progress";
-  isBookmarked?: boolean;
-  hasAttachment?: boolean;
-  hasCode?: boolean;
-  isFeatured?: boolean;
-  previewText?: string;
-}
+import { mockPosts } from "@/app/_mock/code-review";
 
 export default function EnhancedCodeReviewCommunity() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Mock data for code review posts
-  const mockPosts: CodeReviewPost[] = [
-    {
-      id: 1,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      author: "admin",
-      authorLevel: 10,
-      date: "2025.03.05",
-      comments: 32,
-      isBookmarked: true,
-      hasAttachment: true,
-      previewText: "중요한 공지사항입니다. 모든 사용자는 필독해주세요.",
-    },
-    {
-      id: 2,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      author: "admin",
-      authorLevel: 10,
-      date: "2025.03.05",
-      comments: 18,
-      hasAttachment: true,
-    },
-    {
-      id: 3,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      author: "admin",
-      authorLevel: 10,
-      date: "2025.03.05",
-      comments: 12,
-    },
-    {
-      id: 4,
-      title: "이거 코드개선점 코드리뷰 부탁드립니다~~",
-      author: "coder123",
-      authorLevel: 5,
-      date: "2025.03.05",
-      comments: 28,
-      isHot: true,
-      difficulty: 3,
-      tags: ["알고리즘", "다익스트라"],
-      status: "in-progress",
-      hasCode: true,
-      isFeatured: true,
-      previewText:
-        "다익스트라 알고리즘을 구현했는데 시간초과가 발생합니다. 어떻게 최적화할 수 있을까요?",
-    },
-    {
-      id: 5,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      author: "user456",
-      authorLevel: 3,
-      date: "2025.03.05",
-      comments: 8,
-      difficulty: 3,
-      tags: ["이진탐색"],
-      status: "pending",
-      hasCode: true,
-    },
-    {
-      id: 6,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      author: "dev789",
-      authorLevel: 4,
-      date: "2025.03.05",
-      comments: 15,
-      status: "solved",
-      hasCode: true,
-    },
-    {
-      id: 7,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      author: "coder456",
-      authorLevel: 2,
-      date: "2025.03.05",
-      comments: 7,
-      hasCode: true,
-    },
-    {
-      id: 8,
-      title: "공지사항입니다아퍼저씨짜구어머구",
-      author: "programmer123",
-      authorLevel: 1,
-      date: "2025.03.05",
-      comments: 5,
-      hasCode: true,
-    },
-  ];
 
   const filterOptions = [
     { id: "all", label: "전체", icon: <Filter className="h-4 w-4" /> },
