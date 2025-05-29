@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+interface FooterProps {
+  onSubmitForReview: () => void;
+}
 
 const TypewriterText = ({
   text,
@@ -32,7 +35,7 @@ const TypewriterText = ({
   return <span>{displayText}</span>;
 };
 
-export default function Footer() {
+export default function Footer({ onSubmitForReview }: FooterProps) {
   const [showHint, setShowHint] = useState(false);
   const [typingStep, setTypingStep] = useState(0);
 
@@ -160,7 +163,10 @@ export default function Footer() {
         <button className="px-4 py-3 bg-gray-200 text-gray-700 rounded-md">
           코드 실행
         </button>
-        <button className="px-4 py-3 bg-[#251B5B] text-white rounded-md">
+        <button
+          onClick={onSubmitForReview}
+          className="px-4 py-3 bg-[#251B5B] text-white rounded-md"
+        >
           제출 후 리뷰받기
         </button>
       </div>
