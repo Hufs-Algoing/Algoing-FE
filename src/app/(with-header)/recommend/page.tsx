@@ -9,6 +9,11 @@ import {
   recommendedProblems,
   similarProblems,
 } from "@/app/_mock/recommend";
+import { useIncProblems } from "@/app/hook/recommend/use-recommend";
+import IntroSection from "./components/intro-section";
+import DailyRecommendSection from "./(problems)/tier-based-recommend";
+import IncProblemSection from "./(problems)/incproblem-recommend";
+import CodeReviewSection from "./(problems)/weakness-recommend";
 
 interface RecommendationContentProps {
   searchParams: Promise<{ username?: string }>;
@@ -20,12 +25,19 @@ export default function RecommendationContent({
   const [showSolved, setShowSolved] = useState(false);
   const [username, setUsername] = useState<string>("사용자");
 
-  // searchParams를 resolve하고 username 설정
+  const userId = 3; //TODO: 임시 유저아이디
+
   useEffect(() => {
     searchParams.then((params) => {
       setUsername(params.username || "사용자");
     });
   }, [searchParams]);
+
+  const {
+    data: incProblems,
+    isLoading: isLoadingInc,
+    error: errorInc,
+  } = useIncProblems(userId);
 
   const filteredSimilarProblems = showSolved
     ? similarProblems
@@ -37,46 +49,7 @@ export default function RecommendationContent({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">
-                안녕하세요, <span className="text-indigo-200">{username}</span>
-                님!
-              </h1>
-              <p className="mt-2 text-indigo-100 max-w-2xl">
-                알고리즘 실력 향상을 위한 맞춤형 문제와 코드 리뷰를 추천해
-                드립니다. 지금까지의 학습 패턴을 분석하여 최적의 학습 경로를
-                제안합니다.
-              </p>
-            </div>
-            <div className="mt-6 md:mt-0">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div className="flex items-center">
-                  <div className="mr-4">
-                    <div className="text-3xl font-bold">42</div>
-                    <div className="text-xs text-indigo-200">해결한 문제</div>
-                  </div>
-                  <div className="h-10 border-r border-white/20"></div>
-                  <div className="mx-4">
-                    <div className="text-3xl font-bold">3</div>
-                    <div className="text-xs text-indigo-200">현재 레벨</div>
-                  </div>
-                  <div className="h-10 border-r border-white/20"></div>
-                  <div className="ml-4">
-                    <div className="text-3xl font-bold">12</div>
-                    <div className="text-xs text-indigo-200">연속 학습일</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
+      <IntroSection username={username} />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Toggle Switch */}
         <div className="flex justify-end items-center mb-8">
@@ -95,96 +68,12 @@ export default function RecommendationContent({
             />
           </button>
         </div>
-
-        {/* Recommended Problems Section */}
-        <section className="mb-16">
-          <div className="flex items-center mb-6">
-            <Sparkles className="h-6 w-6 text-indigo-600 mr-2" />
-            <h2 className="text-xl font-bold text-gray-900">
-              다음으로 풀면 좋은 문제들이에요
-            </h2>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <Carousel itemsPerPage={4}>
-              {recommendedProblems.map((problem) => (
-                <ProblemCard
-                  key={problem.id}
-                  id={problem.id}
-                  title={problem.title}
-                  level={problem.level}
-                  tags={problem.tags}
-                  isSolved={problem.isSolved}
-                />
-              ))}
-            </Carousel>
-          </div>
-        </section>
-
-        {/* Similar Problems Section */}
-        <section className="mb-16">
-          <div className="flex items-center mb-6">
-            <BookOpen className="h-6 w-6 text-indigo-600 mr-2" />
-            <h2 className="text-xl font-bold text-gray-900">
-              이런 유형의 문제를 많이 풀려요
-            </h2>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <Carousel itemsPerPage={4}>
-              {filteredSimilarProblems.map((problem) => (
-                <ProblemCard
-                  key={problem.id}
-                  id={problem.id}
-                  title={problem.title}
-                  level={problem.level}
-                  tags={problem.tags}
-                  isSolved={problem.isSolved}
-                />
-              ))}
-            </Carousel>
-            {filteredSimilarProblems.length === 0 && (
-              <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-                <TrendingUp className="h-12 w-12 mb-4 text-gray-300" />
-                <p>풀지 않은 유사 문제가 없습니다.</p>
-                <p className="text-sm mt-2">
-                  토글을 켜서 풀었던 문제도 확인해보세요.
-                </p>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Code Reviews Section */}
-        <section className="mb-16">
-          <div className="flex items-center mb-6">
-            <Code className="h-6 w-6 text-indigo-600 mr-2" />
-            <h2 className="text-xl font-bold text-gray-900">
-              이런 유형의 코드리뷰를 받았어요
-            </h2>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <Carousel itemsPerPage={4}>
-              {filteredCodeReviews.map((review) => (
-                <ProblemCard
-                  key={review.id}
-                  id={review.id}
-                  title={review.title}
-                  level={review.level}
-                  tags={review.tags}
-                  isSolved={review.isSolved}
-                />
-              ))}
-            </Carousel>
-            {filteredCodeReviews.length === 0 && (
-              <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-                <Award className="h-12 w-12 mb-4 text-gray-300" />
-                <p>풀지 않은 코드 리뷰가 없습니다.</p>
-                <p className="text-sm mt-2">
-                  토글을 켜서 풀었던 코드 리뷰도 확인해보세요.
-                </p>
-              </div>
-            )}
-          </div>
-        </section>
+        {/* 티어 기반 맞춤 추천 문제 : 요청 받은 사용자의 티어와 선호 문제 유형을 기반으로 문제를 추천 */}
+        <DailyRecommendSection />
+        {/* 많이 틀린 문제 */}
+        <IncProblemSection showSolved={showSolved} />
+        {/* 약점을 기반 */}
+        <CodeReviewSection showSolved={showSolved} />
 
         {/* Weekly Challenge */}
         <section className="mb-16">
@@ -223,98 +112,8 @@ export default function RecommendationContent({
             </div>
           </div>
         </section>
-
-        {/* Learning Path */}
-        <section>
-          <div className="flex items-center mb-6">
-            <TrendingUp className="h-6 w-6 text-indigo-600 mr-2" />
-            <h2 className="text-xl font-bold text-gray-900">
-              맞춤형 학습 경로
-            </h2>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="md:w-1/3 bg-gray-50 rounded-lg p-4 border border-gray-100">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                    <span className="text-green-600 font-bold">1</span>
-                  </div>
-                  <h3 className="font-medium">기초 다지기</h3>
-                </div>
-                <p className="text-sm text-gray-600 mb-3">
-                  기본 자료구조와 알고리즘에 대한 이해를 다집니다.
-                </p>
-                <div className="flex items-center text-green-600 text-sm">
-                  <span className="mr-1">완료됨</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div className="md:w-1/3 bg-indigo-50 rounded-lg p-4 border border-indigo-100">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
-                    <span className="text-indigo-600 font-bold">2</span>
-                  </div>
-                  <h3 className="font-medium">그래프 알고리즘</h3>
-                </div>
-                <p className="text-sm text-gray-600 mb-3">
-                  다양한 그래프 알고리즘을 학습하고 응용합니다.
-                </p>
-                <div className="flex items-center text-indigo-600 text-sm">
-                  <span className="mr-1">진행 중</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div className="md:w-1/3 bg-gray-50 rounded-lg p-4 border border-gray-100">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                    <span className="text-gray-600 font-bold">3</span>
-                  </div>
-                  <h3 className="font-medium">고급 알고리즘</h3>
-                </div>
-                <p className="text-sm text-gray-600 mb-3">
-                  복잡한 문제 해결을 위한 고급 알고리즘을 학습합니다.
-                </p>
-                <div className="flex items-center text-gray-500 text-sm">
-                  <span className="mr-1">잠금됨</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* 코드리뷰 받은 문제 추가 */}
+        <CodeReviewSection showSolved={showSolved} />
       </main>
     </div>
   );

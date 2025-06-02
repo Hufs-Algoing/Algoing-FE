@@ -14,7 +14,6 @@ const ProblemCard: FC<ProblemCardProps> = ({
   tags,
   isSolved,
 }) => {
-  // Get level color based on difficulty
   const getLevelColor = (level: number) => {
     switch (level) {
       case 1:
