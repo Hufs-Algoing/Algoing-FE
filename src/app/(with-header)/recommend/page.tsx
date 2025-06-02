@@ -9,7 +9,7 @@ import {
   recommendedProblems,
   similarProblems,
 } from "@/app/_mock/recommend";
-import { useIncProblems } from "@/app/hook/recommend/use-recommend";
+import { useIncProblems } from "@/app/hook/recommend/use-incproblem";
 import IntroSection from "./components/intro-section";
 import DailyRecommendSection from "./(problems)/tier-based-recommend";
 import IncProblemSection from "./(problems)/incproblem-recommend";

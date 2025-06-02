@@ -3,7 +3,7 @@
 import { BookOpen, TrendingUp } from "lucide-react";
 import Carousel from "../components/carousel";
 import ProblemCard from "../components/problem-card";
-import { useIncProblems } from "@/app/hook/recommend/use-recommend";
+import { useIncProblems } from "@/app/hook/recommend/use-incproblem";
 
 interface IncProblemSectionProps {
   showSolved: boolean;
