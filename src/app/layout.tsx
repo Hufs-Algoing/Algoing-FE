@@ -1,6 +1,6 @@
+import { ReactNode } from "react";
 import "./globals.css";
-import Providers from "./providers";
-
+import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 export const metadata = {
   title: "ALGOING",
   description: "개발자들을 위한 AI 코드리뷰 서비스",
@@ -9,15 +9,11 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
-      <body className="min-h-screen bg-white">
-        <Providers>{children}</Providers>
+      <body>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );

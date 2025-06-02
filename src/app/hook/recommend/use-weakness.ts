@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getWeaknessProblems } from "../../apis/recommend/get-weakness-problems";
+import { getWeaknessProblems } from "../../_api/recommend/get-weakness-problems";
 
 export const useWeaknessProblems = (userId: number) => {
   return useQuery({

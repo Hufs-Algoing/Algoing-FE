@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getTierBasedRecommend } from "../../apis/recommend/get-daily-problems";
+import { getTierBasedRecommend } from "../../_api/recommend/get-daily-problems";
 import { TierBasedRecommend } from "@/app/_types/recommend";
 
 export const useTierBasedRecommend = (userId: number) => {
