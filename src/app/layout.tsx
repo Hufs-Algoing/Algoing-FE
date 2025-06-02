@@ -1,4 +1,5 @@
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata = {
   title: "ALGOING",
@@ -15,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className="min-h-screen bg-white">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
