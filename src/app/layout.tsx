@@ -1,5 +1,5 @@
 import "./globals.css";
-import ReactQueryProvider from "./providers/react-query-provider";
+import Providers from "./providers";
 
 export const metadata = {
   title: "ALGOING",
@@ -16,8 +16,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+      <body className="min-h-screen bg-white">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

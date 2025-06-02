@@ -1,14 +1,27 @@
-'use client';
+// components/ProfileForm.tsx
+"use client";
 
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { postBOJ, BOJInfo } from "@/app/_api/bojLogin";
 
 export default function ProfileForm() {
-  const [baekjoonId, setBaekjoonId] = useState('');
-  const [password, setPassword] = useState('');
+  const [baekjoonId, setBaekjoonId] = useState("");
+  const [password, setPassword] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  // 이미지 선택 시 미리보기 처리
+  const { mutate: submitBOJ, isPending } = useMutation({
+    mutationFn: postBOJ,
+    onSuccess: () => {
+      alert("저장 완료!");
+      // 예: 이동하거나 상태 초기화
+    },
+    onError: () => {
+      alert("저장 실패");
+    },
+  });
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -24,7 +37,9 @@ export default function ProfileForm() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#f5f6ff] to-[#eaefff] px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
-        <h2 className="text-2xl font-semibold text-center mb-2">프로필 정보를 입력해주세요</h2>
+        <h2 className="text-2xl font-semibold text-center mb-2">
+          프로필 정보를 입력해주세요
+        </h2>
         <p className="text-sm text-gray-500 text-center mb-6">
           알고잉 서비스를 이용하기 위해 필요해요
         </p>
@@ -33,9 +48,13 @@ export default function ProfileForm() {
         <div className="flex flex-col items-center mb-6">
           <div className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-4xl text-gray-400">
             {imagePreview ? (
-              <img src={imagePreview} alt="프로필 미리보기" className="w-full h-full object-cover" />
+              <img
+                src={imagePreview}
+                alt="프로필 미리보기"
+                className="w-full h-full object-cover"
+              />
             ) : (
-              '👤'
+              "👤"
             )}
           </div>
           <label
@@ -55,7 +74,9 @@ export default function ProfileForm() {
 
         {/* 백준 아이디 */}
         <div className="mb-4">
-          <label className="block text-sm text-gray-700 mb-1">백준 아이디</label>
+          <label className="block text-sm text-gray-700 mb-1">
+            백준 아이디
+          </label>
           <div className="relative">
             <input
               type="text"
@@ -91,15 +112,17 @@ export default function ProfileForm() {
 
         {/* 저장 버튼 */}
         <button
-          className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-md font-medium transition"
-          onClick={() => {
-            // TODO: 여기에 서버 업로드 로직 추가
-            console.log('백준ID:', baekjoonId);
-            console.log('비밀번호:', password);
-            console.log('이미지 파일:', imageFile);
-          }}
+          className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-md font-medium transition disabled:opacity-50"
+          onClick={() =>
+            submitBOJ({
+              handle: baekjoonId, // handle은 bojId와 동일하게
+              bojId: baekjoonId,
+              bojPassword: password,
+            })
+          }
+          disabled={isPending}
         >
-          저장하기
+          {isPending ? "저장 중..." : "저장하기"}
         </button>
       </div>
     </div>
