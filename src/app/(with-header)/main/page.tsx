@@ -1,4 +1,3 @@
-
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
@@ -21,6 +20,8 @@ export default function UserDashboard() {
         <Link href="/profile" className="w-20 h-20">
           <Image
             src="/profile5.png"
+            width={80} 
+            height={80} 
             alt="프로필"
             className="w-20 h-20 rounded-full  dark:border-neutral-700 shadow-md bg-gray-black dark:bg-neutral-700 shrink-0 object-cover"
           />

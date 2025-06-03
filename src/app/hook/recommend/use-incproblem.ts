@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IncProblem } from "../../_types/recommend";
 import { getIncProblems } from "../../_api/recommend/get-incproblems";
 

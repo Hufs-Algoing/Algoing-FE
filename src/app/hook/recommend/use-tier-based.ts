@@ -1,4 +1,5 @@
-import { useQuery } from "react-query";
+
+import { useQuery } from "@tanstack/react-query";
 import { getTierBasedRecommend } from "../../_api/recommend/get-daily-problems";
 import { TierBasedRecommend } from "@/app/_types/recommend";
 

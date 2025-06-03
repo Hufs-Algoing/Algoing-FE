@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getWeaknessProblems } from "../../_api/recommend/get-weakness-problems";
 
 export const useWeaknessProblems = (userId: number) => {
