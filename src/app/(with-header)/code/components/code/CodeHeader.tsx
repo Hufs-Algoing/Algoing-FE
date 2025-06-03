@@ -1,5 +1,4 @@
 import Image from "next/image";
-import ShareButton from "../../../../public/problem/Share.svg";
 export default function CodeHeader() {
   return (
     <header className="flex items-center justify-between p-4 border-b  px-12">

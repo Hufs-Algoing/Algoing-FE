@@ -17,6 +17,7 @@ import {
 import { motion } from "framer-motion";
 import { userData } from "@/app/_mock/user-data";
 import { reviewedProblems, solvedProblems } from "@/app/_mock/mypage";
+import Image from "next/image";
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("solved");
@@ -83,7 +84,7 @@ export default function MyPage() {
                   className="relative"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-lg opacity-50"></div>
-                  <img
+                  <Image
                     src={userData.profileImage || "/placeholder.svg"}
                     alt="프로필"
                     className="relative w-20 h-20 rounded-full border-4 border-white/30 shadow-2xl object-cover"

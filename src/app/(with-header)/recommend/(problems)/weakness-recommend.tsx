@@ -5,11 +5,7 @@ import Carousel from "../components/carousel";
 import ProblemCard from "../components/problem-card";
 import { useWeaknessProblems } from "@/app/hook/recommend/use-weakness";
 
-interface WeaknessSectionProps {
-  showSolved: boolean; // 현재 showSolved는 API 데이터에는 영향 없음
-}
-
-export default function WeaknessSection({ showSolved }: WeaknessSectionProps) {
+export default function WeaknessSection() {
   const userId = 3;
   const { data, isLoading, error } = useWeaknessProblems(userId);
 

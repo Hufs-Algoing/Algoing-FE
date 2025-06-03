@@ -40,7 +40,7 @@ interface CodeReviewProps {
 export default function CodeReview({ onClose }: CodeReviewProps) {
   const [typingStep, setTypingStep] = useState(0);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
-  const [reviewComplete, setReviewComplete] = useState(false);
+  const [, setReviewComplete] = useState(false);
 
   const handleStepComplete = () => {
     setTypingStep((prev) => prev + 1);

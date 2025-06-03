@@ -3,10 +3,6 @@
 import { useTierBasedRecommend } from "@/app/hook/recommend/use-tier-based";
 import { Award } from "lucide-react";
 
-interface Props {
-  userId: number;
-}
-
 export default function RecommendedProblems() {
   const userId = 3;
   const { data, isLoading, error } = useTierBasedRecommend(userId);

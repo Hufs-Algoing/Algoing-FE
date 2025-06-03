@@ -58,7 +58,7 @@ export default function LoginPage() {
         <div className="min-h-screen flex flex-row justify-center items-center bg-gradient-to-br from-indigo-100 to-white text-black px-4">
           <div className="flex-1 text-center space-y-4 max-w-lg">
             <div className="flex items-center justify-center space-x-2">
-              <img
+              <Image
                 src="/img/Logo.svg"
                 alt="algoing"
                 className="w-52 drop-shadow-md"
@@ -67,7 +67,7 @@ export default function LoginPage() {
             </div>
             <h1 className="text-3xl font-semibold">코딩테스트 학습하기</h1>
             <p className="text-gray-600 text-base">
-              '매일매일' 하루에 3문제 챌린지에 도전
+              매일매일 하루에 3문제 챌린지에 도전
               <br />
               지금 바로 시작하세요
             </p>

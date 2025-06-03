@@ -5,13 +5,7 @@ import Carousel from "../components/carousel";
 import ProblemCard from "../components/problem-card";
 import { useIncProblems } from "@/app/hook/recommend/use-incproblem";
 
-interface IncProblemSectionProps {
-  showSolved: boolean;
-}
-
-export default function IncProblemSection({
-  showSolved,
-}: IncProblemSectionProps) {
+export default function IncProblemSection() {
   const userId = 3; // TODO: 임시
   const { data: incProblems, isLoading, error } = useIncProblems(userId);
 
