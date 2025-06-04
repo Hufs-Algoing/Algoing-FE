@@ -2,7 +2,7 @@ export interface IntroSectionProps {
   username: string;
   level: number;
   profileImage: string;
-  stats: {
+  stats?: {
     solved: number;
     attempted: number;
     reviewed: number;

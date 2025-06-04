@@ -135,7 +135,7 @@ export default function MyPage() {
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <ActivityChart activityData={activityData} />
-          <PerformanceChart accuracy={92} avgTime={"37"} />
+          <PerformanceChart />
         </div>
         <div ref={problemsSectionRef}>
           <ProblemTabs

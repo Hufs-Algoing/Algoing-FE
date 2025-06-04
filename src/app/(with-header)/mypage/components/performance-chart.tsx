@@ -2,14 +2,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GaugeCircle, Timer, BarChart, Trophy, Award } from "lucide-react";
+import { Trophy, Award } from "lucide-react";
 
-interface PerformanceChartProps {
-  accuracy: number;
-  avgTime: string;
-}
 
-export function PerformanceChart({ accuracy, avgTime }: PerformanceChartProps) {
+export function PerformanceChart() {
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}

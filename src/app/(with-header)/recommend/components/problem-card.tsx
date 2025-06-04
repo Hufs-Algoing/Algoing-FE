@@ -1,4 +1,4 @@
-import type { FC } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface ProblemCardProps {
   id: number;
@@ -6,16 +6,9 @@ interface ProblemCardProps {
   level: number;
   tags: string[];
   isSolved: boolean;
-  problem: any;
 }
 
-const ProblemCard = ({
-  title,
-  level,
-  tags,
-  isSolved,
-  problem,
-}: ProblemCardProps) => {
+const ProblemCard = ({ title, level, tags, isSolved }: ProblemCardProps) => {
   const getLevelColor = (level: number) => {
     switch (level) {
       case 1:

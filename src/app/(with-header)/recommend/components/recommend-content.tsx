@@ -24,7 +24,13 @@ export default function RecommendationContent({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <IntroSection username={username} />
+      <IntroSection
+        username={username}
+        level={1}
+        profileImage=""
+        streak={0}
+        totalPoints={0}
+      />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Toggle Switch */}
         <div className="flex justify-end items-center mb-8">
