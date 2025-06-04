@@ -6,9 +6,9 @@ export default function WithHeaderLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    <>
       <Header />
-      <body className="pt-[72px]">{children}</body>
-    </html>
+      <main className="pt-[72px]">{children}</main>
+    </>
   );
 }

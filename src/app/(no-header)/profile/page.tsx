@@ -1,15 +1,16 @@
-// components/ProfileForm.tsx
+// app/(no-header)/profile/page.tsx
 "use client";
 
 import { useState, ChangeEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { postBOJ, BOJInfo } from "@/app/_api/bojLogin";
+import { postBOJ } from "@/app/_api/bojLogin";
+import Image from "next/image";
 
 export default function ProfileForm() {
   const [baekjoonId, setBaekjoonId] = useState("");
   const [password, setPassword] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [, setImageFile] = useState<File | null>(null);
 
   const { mutate: submitBOJ, isPending } = useMutation({
     mutationFn: postBOJ,
@@ -48,7 +49,7 @@ export default function ProfileForm() {
         <div className="flex flex-col items-center mb-6">
           <div className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-4xl text-gray-400">
             {imagePreview ? (
-              <img
+              <Image
                 src={imagePreview}
                 alt="프로필 미리보기"
                 className="w-full h-full object-cover"

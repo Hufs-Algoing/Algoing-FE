@@ -1,9 +1,6 @@
-import Main from "./main/page";
+//app/(with-header)/page.tsx
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <>
-      <Main />
-    </>
-  );
+  redirect("/main");
 }

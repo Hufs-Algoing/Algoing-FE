@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Search, Bell, Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkMode";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+
 const menuItems = [
   { name: "추천 문제", path: "/recommend" },
   { name: "리뷰 커뮤니티", path: "/community" },
@@ -17,7 +19,7 @@ export default function Header() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [hasNotification, ] = useState(true);
+  const [hasNotification] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -61,10 +63,12 @@ export default function Header() {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <img
+            <Image
               src={isDarkMode ? "/DarkModeLogo.png" : "/LightModeLogo.png"}
               alt="ALGOING Logo"
-              className="h-8 sm:h-9"
+              width={100}
+              height={36}
+              className="h-8 sm:h-9 w-auto"
             />
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
           </motion.div>
@@ -198,9 +202,11 @@ export default function Header() {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
             className="relative"
           >
-            <img
+            <Image
               src="/profile2.jpg"
               alt="프로필"
+              width={36}
+              height={36}
               className="w-9 h-9 rounded-full border-2 border-white dark:border-neutral-800 shadow-sm object-cover"
             />
             <span className="absolute inset-0 rounded-full ring-2 ring-indigo-500/50 opacity-0 group-hover:opacity-100 transition-opacity"></span>

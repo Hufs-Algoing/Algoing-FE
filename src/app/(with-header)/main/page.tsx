@@ -1,10 +1,11 @@
-"use client";
+export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import ContributionCalendar from "./components/Calendar";
 import Progress from "./components/Progress";
 import RecommendedProblems from "./components/Recommend";
 import { FaCode } from "react-icons/fa";
+import Image from "next/image";
 
 export default function UserDashboard() {
   const contributions = [
@@ -17,8 +18,10 @@ export default function UserDashboard() {
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-16">
         <Link href="/profile" className="w-20 h-20">
-          <img
+          <Image
             src="/profile5.png"
+            width={80} 
+            height={80} 
             alt="프로필"
             className="w-20 h-20 rounded-full  dark:border-neutral-700 shadow-md bg-gray-black dark:bg-neutral-700 shrink-0 object-cover"
           />

@@ -1,13 +1,5 @@
-import "./globals.css";
 import Providers from "./providers";
-
-export const metadata = {
-  title: "ALGOING",
-  description: "개발자들을 위한 AI 코드리뷰 서비스",
-  icons: {
-    icon: "/Ologo.png",
-  },
-};
+import "@/app/globals.css";
 
 export default function RootLayout({
   children,
@@ -16,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="min-h-screen bg-white">
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>
