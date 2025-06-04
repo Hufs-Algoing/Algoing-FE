@@ -203,7 +203,7 @@ export default function Header() {
             className="relative"
           >
             <Image
-              src="/profile2.jpg"
+              src="/profile5.png"
               alt="프로필"
               width={36}
               height={36}

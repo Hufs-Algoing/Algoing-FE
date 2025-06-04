@@ -1,6 +1,5 @@
 "use client";
 
-import type { FC } from "react";
 import { Edit } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -9,10 +8,7 @@ interface CommunityHeaderProps {
   onMyPosts: () => void;
 }
 
-const CommunityHeader: FC<CommunityHeaderProps> = ({
-  onNewPost,
-  onMyPosts,
-}) => {
+const CommunityHeader = ({ onNewPost, onMyPosts }: CommunityHeaderProps) => {
   return (
     <div className="mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">

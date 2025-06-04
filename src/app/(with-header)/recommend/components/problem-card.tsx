@@ -6,14 +6,16 @@ interface ProblemCardProps {
   level: number;
   tags: string[];
   isSolved: boolean;
+  problem: any;
 }
 
-const ProblemCard: FC<ProblemCardProps> = ({
+const ProblemCard = ({
   title,
   level,
   tags,
   isSolved,
-}) => {
+  problem,
+}: ProblemCardProps) => {
   const getLevelColor = (level: number) => {
     switch (level) {
       case 1:
