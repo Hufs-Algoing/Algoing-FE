@@ -85,6 +85,8 @@ export default function MyPage() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-lg opacity-50"></div>
                   <Image
+                    width={80}
+                    height={80}
                     src={userData.profileImage || "/placeholder.svg"}
                     alt="프로필"
                     className="relative w-20 h-20 rounded-full border-4 border-white/30 shadow-2xl object-cover"
