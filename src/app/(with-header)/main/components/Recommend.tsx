@@ -23,7 +23,9 @@ export default function RecommendedProblems() {
     );
   }
 
-  if (data.length === 0) {
+  const problems = Array.isArray(data) ? data : [];
+
+  if (problems.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-gray-500">
         <Award className="h-12 w-12 mb-4 text-gray-300" />
@@ -34,7 +36,7 @@ export default function RecommendedProblems() {
 
   return (
     <div className="flex flex-col gap-3">
-      {data.map((problem) => (
+      {problems.map((problem) => (
         <div
           key={problem.problemId}
           className="bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col gap-2 hover:shadow-md transition-shadow"
