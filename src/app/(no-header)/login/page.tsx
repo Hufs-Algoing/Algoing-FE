@@ -59,10 +59,10 @@ export default function LoginPage() {
           <div className="flex-1 text-center space-y-4 max-w-lg">
             <div className="flex items-center justify-center space-x-2">
               <Image
-                width={80}
-                height={80}
                 src="/img/Logo.svg"
                 alt="algoing"
+                width={100}
+                height={100}
                 className="w-52 drop-shadow-md"
               />
               <span className="text-3xl font-semibold">으로,</span>

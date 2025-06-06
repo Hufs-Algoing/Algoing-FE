@@ -2,9 +2,11 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { postBOJ } from "@/app/_api/bojLogin";
+
+import { useRouter } from "next/navigation";
+
 import Image from "next/image";
+import { useInsertBOJ } from "@/app/hook/login/use-insertBoj";
 
 export default function ProfileForm() {
   const [baekjoonId, setBaekjoonId] = useState("");
@@ -12,11 +14,12 @@ export default function ProfileForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [, setImageFile] = useState<File | null>(null);
 
-  const { mutate: submitBOJ, isPending } = useMutation({
-    mutationFn: postBOJ,
+  const router = useRouter();
+
+  const { mutate: submitBOJ, isPending } = useInsertBOJ({
     onSuccess: () => {
       alert("저장 완료!");
-      // 예: 이동하거나 상태 초기화
+      router.push("/main");
     },
     onError: () => {
       alert("저장 실패");
@@ -113,10 +116,9 @@ export default function ProfileForm() {
 
         {/* 저장 버튼 */}
         <button
-          className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-md font-medium transition disabled:opacity-50"
           onClick={() =>
             submitBOJ({
-              handle: baekjoonId, // handle은 bojId와 동일하게
+              handle: baekjoonId,
               bojId: baekjoonId,
               bojPassword: password,
             })

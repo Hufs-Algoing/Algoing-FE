@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+"use client";
 
 import Link from "next/link";
 import ContributionCalendar from "./components/Calendar";
@@ -6,14 +6,19 @@ import Progress from "./components/Progress";
 import RecommendedProblems from "./components/Recommend";
 import { FaCode } from "react-icons/fa";
 import Image from "next/image";
+import { useLoadUser } from "@/app/hook/use-userdata";
+import { useUserStore } from "@/app/_store/use-user-store";
 
 export default function UserDashboard() {
+  useLoadUser();
+  const { name, picture } = useUserStore();
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-16">
         <Link href="/profile" className="w-20 h-20">
           <Image
-            src="/profile5.png"
+            src={picture ?? "/profile5.png"}
             width={80}
             height={80}
             alt="프로필"
@@ -22,7 +27,7 @@ export default function UserDashboard() {
         </Link>
         <div className="flex-1 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <h2 className="text-2xl font-bold">ahr0205</h2>
+            <h2 className="text-2xl font-bold">{name}</h2>
             <span className="text-xs bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-md">
               Lv. 5
             </span>
