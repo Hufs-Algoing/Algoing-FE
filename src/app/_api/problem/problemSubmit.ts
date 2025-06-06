@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_BASE_URL = "https://api.al-going.com";
+import axiosInstance from "../instance";
 
 export interface SubmitRequest {
   userId: number;
@@ -10,6 +8,6 @@ export interface SubmitRequest {
 }
 
 export const problemSubmit = async (payload: SubmitRequest) => {
-  const response = await axios.post(`${API_BASE_URL}/api/submit`, payload);
+  const response = await axiosInstance.post(`/submit`, payload);
   return response.data;
 };
