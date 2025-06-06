@@ -10,6 +10,6 @@ export interface BOJInfo {
 }
 
 export const postBOJ = async (data: BOJInfo) => {
-  const res = await axios.post(`${API_BASE_URL}/insertboj`, data);
+  const res = await axios.post(`${API_BASE_URL}/api/insertboj`, data);
   return res.data;
 };
