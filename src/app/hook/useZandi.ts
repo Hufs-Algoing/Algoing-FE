@@ -2,8 +2,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { apiGet } from "../_api/method";
-
+import { apiGet } from "../_api/methods";
 export interface ContributionDay {
   date: string;
   count: number;
