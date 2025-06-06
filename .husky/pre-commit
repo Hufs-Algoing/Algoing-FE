@@ -1,0 +1,10 @@
+echo "🔍 commit 이전에 lint 규칙을 적용하고 빌드합니다..."
+
+# lint-staged 실행 (변경된 파일만 검사)
+if ! pnpm lint-staged; then
+  echo "❌ lint 규칙 검사에서 오류가 발생했습니다."
+  exit 1
+fi
+
+echo "✅ 모든 검사가 성공적으로 완료되었습니다."
+exit 0
