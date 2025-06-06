@@ -1,5 +1,5 @@
 // components/ProblemTabs.tsx
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -125,7 +125,7 @@ export function ProblemTabs({
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-1 mb-3">
-                  {problem.tags.map((tag: string) => (
+                  {problem.tags?.map((tag: string) => (
                     <span
                       key={tag}
                       className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-md font-medium"
