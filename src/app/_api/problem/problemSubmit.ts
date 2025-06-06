@@ -10,6 +10,6 @@ export interface SubmitRequest {
 }
 
 export const problemSubmit = async (payload: SubmitRequest) => {
-  const response = await axios.post(`${API_BASE_URL}/submit`, payload);
+  const response = await axios.post(`${API_BASE_URL}/api/submit`, payload);
   return response.data;
 };

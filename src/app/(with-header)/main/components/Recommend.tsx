@@ -2,11 +2,11 @@
 
 import { useTierBasedRecommend } from "@/app/hook/recommend/use-tier-based";
 import { Award } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 export default function RecommendedProblems() {
   const userId = 3;
   const { data, isLoading, error } = useTierBasedRecommend(userId);
-
+  const router = useRouter();
   if (isLoading) {
     return (
       <div className="text-center text-gray-500 py-12">
@@ -39,6 +39,7 @@ export default function RecommendedProblems() {
       {problems.map((problem) => (
         <div
           key={problem.problemId}
+          onClick={() => router.push(`/code/${problem.problemId}`)}
           className="bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col gap-2 hover:shadow-md transition-shadow"
         >
           <div className="flex items-center justify-between">

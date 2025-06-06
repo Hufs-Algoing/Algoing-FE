@@ -64,6 +64,8 @@ export default function LoginPage() {
                 width={100}
                 height={100}
                 className="w-52 drop-shadow-md"
+                width={18}
+                height={18}
               />
               <span className="text-3xl font-semibold">으로,</span>
             </div>
