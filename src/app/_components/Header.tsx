@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Search, Bell, Menu, X } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkMode";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -19,7 +19,6 @@ export default function Header() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [hasNotification] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -181,16 +180,6 @@ export default function Header() {
         <div className="flex items-center">
           <DarkModeToggle />
         </div>
-
-        {/* Notification */}
-        <button className="relative p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors">
-          <Bell size={20} />
-          {hasNotification && (
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full">
-              <span className="absolute inset-0 rounded-full animate-ping bg-red-400 opacity-75"></span>
-            </span>
-          )}
-        </button>
 
         {/* Profile */}
         <Link

@@ -8,20 +8,14 @@ import { FaCode } from "react-icons/fa";
 import Image from "next/image";
 
 export default function UserDashboard() {
-  const contributions = [
-    { date: "2025-03-17", count: 1 },
-    { date: "2025-03-18", count: 3 },
-    { date: "2025-03-19", count: 5 },
-  ];
-
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-16">
         <Link href="/profile" className="w-20 h-20">
           <Image
             src="/profile5.png"
-            width={80} 
-            height={80} 
+            width={80}
+            height={80}
             alt="프로필"
             className="w-20 h-20 rounded-full  dark:border-neutral-700 shadow-md bg-gray-black dark:bg-neutral-700 shrink-0 object-cover"
           />
@@ -55,11 +49,7 @@ export default function UserDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6">
         <div className="border dark:border-gray-700 rounded-xl p-4">
-          <ContributionCalendar
-            year={2025}
-            month={3}
-            contributions={contributions}
-          />
+          <ContributionCalendar year={2025} month={3} />
         </div>
 
         <div className="flex flex-col gap-4">

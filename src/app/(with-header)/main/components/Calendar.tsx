@@ -3,25 +3,19 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/app/lib/utils";
-
-interface ContributionDay {
-  date: string;
-  count: number;
-}
-
-interface ContributionCalendarProps {
-  year: number;
-  month: number;
-  contributions: ContributionDay[];
-}
+import { useZandi } from "@/app/hook/useZandi";
 
 export default function ContributionCalendar({
   year,
   month,
-  contributions,
-}: ContributionCalendarProps) {
+}: {
+  year: number;
+  month: number;
+}) {
   const [currentYear, setCurrentYear] = useState(year);
   const [currentMonth, setCurrentMonth] = useState(month);
+
+  const { data: contributions = [], isLoading } = useZandi();
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
@@ -32,7 +26,9 @@ export default function ContributionCalendar({
     .map((_, index) => {
       const day = index - firstDay + 1;
       if (day > 0 && day <= daysInMonth) {
-        const dateStr = `${currentYear}-${currentMonth.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+        const dateStr = `${currentYear}-${currentMonth
+          .toString()
+          .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
         const contribution = contributions.find((c) => c.date === dateStr);
         return {
           day,
@@ -86,41 +82,46 @@ export default function ContributionCalendar({
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 mb-4">
-        {daysOfWeek.map((day) => (
-          <div
-            key={day}
-            className="text-center text-xs font-medium text-gray-500 py-2"
-          >
-            {day}
-          </div>
-        ))}
-      </div>
-
-      {/* 날짜 그리드 */}
-      <div className="space-y-2">
-        {weeks.map((week, weekIndex) => (
-          <div key={weekIndex} className="grid grid-cols-7 gap-2">
-            {week.map((day, dayIndex) => (
+      {isLoading ? (
+        <div className="text-center text-gray-500">로딩 중...</div>
+      ) : (
+        <>
+          <div className="grid grid-cols-7 gap-2 mb-4">
+            {daysOfWeek.map((day) => (
               <div
-                key={dayIndex}
-                className={cn(
-                  "aspect-square rounded-lg transition-all duration-200 flex items-center justify-center text-xs font-medium",
-                  day ? getColorClass(day.count) : "opacity-0"
-                )}
+                key={day}
+                className="text-center text-xs font-medium text-gray-500 py-2"
               >
-                {day?.day}
+                {day}
               </div>
             ))}
           </div>
-        ))}
-      </div>
 
-      <div className="flex items-center justify-center gap-6 mt-8">
-        <LegendItem color="bg-green-100" label="1 solved" />
-        <LegendItem color="bg-green-200" label="2~3 solved" />
-        <LegendItem color="bg-green-400" label="4+ solved" />
-      </div>
+          <div className="space-y-2">
+            {weeks.map((week, weekIndex) => (
+              <div key={weekIndex} className="grid grid-cols-7 gap-2">
+                {week.map((day, dayIndex) => (
+                  <div
+                    key={dayIndex}
+                    className={cn(
+                      "aspect-square rounded-lg transition-all duration-200 flex items-center justify-center text-xs font-medium",
+                      day ? getColorClass(day.count) : "opacity-0"
+                    )}
+                  >
+                    {day?.day}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-center gap-6 mt-8">
+            <LegendItem color="bg-green-100" label="1 solved" />
+            <LegendItem color="bg-green-200" label="2~3 solved" />
+            <LegendItem color="bg-green-400" label="4+ solved" />
+          </div>
+        </>
+      )}
     </div>
   );
 }
