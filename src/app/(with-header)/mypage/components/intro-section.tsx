@@ -11,7 +11,6 @@ export default function MypageIntroSection() {
     <div className="mb-8">
       <div className="bg-gradient-to-r from-violet-600 to-purple-700 rounded-3xl shadow-xl overflow-hidden">
         <div className="relative">
-          {/* Background Pattern */}
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.1),transparent)]"></div>
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-purple-400 rounded-full blur-3xl opacity-20"></div>
@@ -20,7 +19,6 @@ export default function MypageIntroSection() {
 
           <div className="relative px-6 py-8 md:px-10 md:py-10">
             <div className="flex flex-col md:flex-row items-center gap-8">
-              {/* Profile Image & Status */}
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -32,7 +30,7 @@ export default function MypageIntroSection() {
                     <Image
                       width={128}
                       height={128}
-                      src={userData.profileImage || "/placeholder.svg"}
+                      src={"/profile5.png"}
                       alt="프로필"
                       className="w-full h-full object-cover"
                     />
@@ -44,7 +42,6 @@ export default function MypageIntroSection() {
                 </div>
               </motion.div>
 
-              {/* User Info */}
               <div className="flex-1 text-center md:text-left">
                 <motion.div
                   initial={{ y: -10, opacity: 0 }}

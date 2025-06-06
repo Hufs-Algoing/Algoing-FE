@@ -9,6 +9,7 @@ import { PerformanceChart } from "./components/performance-chart";
 import { useSolvedProblems } from "@/app/hook/mypage/use-solved";
 import { useReviewedProblems } from "@/app/hook/mypage/use-reviewed";
 import { useBookmarkedProblems } from "@/app/hook/mypage/use-bookmarked";
+import { PageLoading } from "@/app/_components/loading";
 
 const activityData = [
   { date: "01-09", problems: 1, day: "월" },
@@ -25,9 +26,17 @@ export default function MyPage() {
   const problemsSectionRef = useRef<HTMLDivElement>(null);
 
   const userId = 3;
-  const { data: solvedProblems = [] } = useSolvedProblems(userId ?? 0);
-  const { data: reviewedProblems = [] } = useReviewedProblems(userId ?? 0);
-  const { data: bookmarkedProblems = [] } = useBookmarkedProblems(userId ?? 0);
+
+  const { data: solvedProblems = [], isLoading: isSolvedLoading } =
+    useSolvedProblems(userId ?? 0);
+  const { data: reviewedProblems = [], isLoading: isReviewedLoading } =
+    useReviewedProblems(userId ?? 0);
+  const { data: bookmarkedProblems = [], isLoading: isBookmarkedLoading } =
+    useBookmarkedProblems(userId ?? 0);
+
+  if (!userId || isSolvedLoading || isReviewedLoading || isBookmarkedLoading) {
+    return <PageLoading />;
+  }
 
   const scrollToProblems = (tab: string) => {
     setActiveTab(tab);
