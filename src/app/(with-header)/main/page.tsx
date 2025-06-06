@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+"use client";
 
 import Link from "next/link";
 import ContributionCalendar from "./components/Calendar";
@@ -6,8 +6,12 @@ import Progress from "./components/Progress";
 import RecommendedProblems from "./components/Recommend";
 import { FaCode } from "react-icons/fa";
 import Image from "next/image";
+import { useLoadUser } from "@/app/hook/use-userdata";
+import { useUserStore } from "@/app/_store/use-user-store";
 
 export default function UserDashboard() {
+  useLoadUser();
+  const { name, picture } = useUserStore();
   const contributions = [
     { date: "2025-03-17", count: 1 },
     { date: "2025-03-18", count: 3 },
@@ -19,16 +23,16 @@ export default function UserDashboard() {
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-16">
         <Link href="/profile" className="w-20 h-20">
           <Image
-            src="/profile5.png"
-            width={80} 
-            height={80} 
+            src={picture ?? "/profile5.png"}
+            width={80}
+            height={80}
             alt="프로필"
             className="w-20 h-20 rounded-full  dark:border-neutral-700 shadow-md bg-gray-black dark:bg-neutral-700 shrink-0 object-cover"
           />
         </Link>
         <div className="flex-1 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <h2 className="text-2xl font-bold">ahr0205</h2>
+            <h2 className="text-2xl font-bold">{name}</h2>
             <span className="text-xs bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-md">
               Lv. 5
             </span>
