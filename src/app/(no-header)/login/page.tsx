@@ -61,6 +61,8 @@ export default function LoginPage() {
               <Image
                 src="/img/Logo.svg"
                 alt="algoing"
+                width={100}
+                height={100}
                 className="w-52 drop-shadow-md"
               />
               <span className="text-3xl font-semibold">으로,</span>
