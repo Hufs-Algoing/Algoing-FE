@@ -25,3 +25,32 @@ export interface TierBasedRecommendResponse {
   message: string;
   result: TierBasedRecommend[];
 }
+
+export interface RecommendationItem {
+  problemId: number;
+  title: string;
+  tag: string;
+  level: number;
+}
+
+export interface DailyRecommendation extends RecommendationItem {
+  score: number;
+}
+
+export interface WeaknessRecommendation extends RecommendationItem {
+  finalScore: number;
+}
+export interface AllRecommendationsResponse {
+  dailyRecommendations: any[];
+  incProblemRecommendations: any[];
+  weaknessRecommendations: any[];
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    recommendationSessionId: string;
+    dailyRecommendations: DailyRecommendation[];
+    incProblemRecommendations: IncProblem[];
+    weaknessRecommendations: WeaknessRecommendation[];
+  };
+}
