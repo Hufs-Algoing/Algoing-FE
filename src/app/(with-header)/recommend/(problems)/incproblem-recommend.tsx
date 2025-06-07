@@ -30,19 +30,19 @@ export default function IncProblemSection() {
             <p>추천 문제가 없습니다.</p>
           </div>
         ) : (
-        <Carousel itemsPerPage={4}>
-          {Array.isArray(incProblems) &&
-            incProblems.map((problem: any) => (
-              <ProblemCard
-                key={problem.problemId}
-                id={problem.problemId}
-                title={problem.title}
-                level={1}
-                tags={problem.tag.split(",")}
-                isSolved={false}
-              />
-            ))}
-        </Carousel>
+          <Carousel itemsPerPage={4}>
+            {Array.isArray(incProblems) &&
+              incProblems.map((problem: any) => (
+                <ProblemCard
+                  key={problem.problemId}
+                  id={problem.problemId}
+                  title={problem.title}
+                  level={1}
+                  tags={problem.tag.split(",")}
+                  isSolved={false}
+                />
+              ))}
+          </Carousel>
         )}
       </div>
     </section>

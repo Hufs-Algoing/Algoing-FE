@@ -1,7 +1,15 @@
-interface IntroSectionProps {
+export interface IntroSectionProps {
   username: string;
+  level: number;
+  profileImage: string;
+  stats?: {
+    solved: number;
+    attempted: number;
+    reviewed: number;
+  };
+  streak: number;
+  totalPoints: number;
 }
-
 export default function IntroSection({ username }: IntroSectionProps) {
   return (
     <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
