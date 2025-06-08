@@ -17,7 +17,7 @@ export default function Code() {
   const userId = 3; // 임시. /api/myinfo 결과로 대체 예정
   const problemNum = 1000;
 
-  const { mutate: submitCode, isPending } = useMutation({
+  const { mutate: submitCode } = useMutation({
     mutationFn: problemSubmit,
     onSuccess: () => {
       alert("제출 성공");
