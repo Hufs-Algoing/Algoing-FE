@@ -60,7 +60,8 @@ export default function MyPage() {
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <ActivityChart activityData={activityData} />
-          <PerformanceChart />
+          <PerformanceChart userId={3} />
+          {/* //userid하드코딩 */}
         </div>
         <div ref={problemsSectionRef}>
           <ProblemTabs
