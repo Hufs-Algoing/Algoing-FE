@@ -4,8 +4,8 @@ import { useState } from "react";
 import IntroSection from "./intro-section";
 import { useAllRecommendations } from "@/app/hook/recommend/use-all-recommend";
 import { PageLoading } from "@/app/_components/loading";
-import { RecommendSection } from "./recommend-section";
 import { BookOpen, Code, Sparkles } from "lucide-react";
+import { Suspense, lazy } from "react";
 
 export default function RecommendationContent() {
   const [showSolved, setShowSolved] = useState(false);
@@ -17,6 +17,7 @@ export default function RecommendationContent() {
   const daily = recommendationData?.dailyRecommendations ?? [];
   const inc = recommendationData?.incProblemRecommendations ?? [];
   const weak = recommendationData?.weaknessRecommendations ?? [];
+  const RecommendSection = lazy(() => import("./recommend-section"));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -48,7 +49,7 @@ export default function RecommendationContent() {
           {isLoading ? (
             <PageLoading />
           ) : (
-            <>
+            <Suspense fallback={<PageLoading />}>
               <RecommendSection
                 title="티어 기반 맞춤 추천 문제"
                 icon={<Sparkles className="h-6 w-6" />}
@@ -64,7 +65,7 @@ export default function RecommendationContent() {
                 icon={<Code className="h-6 w-6" />}
                 problems={weak}
               />
-            </>
+            </Suspense>
           )}
         </>
 
