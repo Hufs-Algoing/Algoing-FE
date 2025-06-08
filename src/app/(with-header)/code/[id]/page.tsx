@@ -8,11 +8,13 @@ import CodeReview from "@/app/(with-header)/code/components/code/CodeReview";
 import ProblemInfo from "@/app/(with-header)/code/components/code/ProblemInfo";
 import { useProblemSubmit } from "@/app/hook/problem/use-problem-submit";
 import { useParams } from "next/navigation";
-
+import { RotateCcw } from "lucide-react";
+import DarkModeToggle from "@/app/_components/DarkMode";
 export default function Code() {
   const [showReview, setShowReview] = useState(false);
   const [language, setLanguage] = useState("node.js");
-  const [code, setCode] = useState("// 여기에 코드를 입력하세요");
+  const initialCode = "// 여기에 코드를 입력하세요";
+  const [code, setCode] = useState(initialCode);
 
   const userId = 3; // 임시. /api/myinfo 결과로 대체 예정
   const { id } = useParams();
@@ -23,7 +25,11 @@ export default function Code() {
       ? localStorage.getItem("recommendationSessionId") || ""
       : "";
   const { mutate: submitCode } = useProblemSubmit();
-
+  const handleResetCode = () => {
+    if (window.confirm("코드를 초기화하시겠습니까?")) {
+      setCode(initialCode);
+    }
+  };
   const languageOptions = [
     "node.js",
     "Python 3",
@@ -78,24 +84,17 @@ export default function Code() {
                 ))}
               </select>
 
-              <div className="flex gap-2">
-                <button onClick={() => setCode("")}>코드 초기화</button>
-                <button>다크 모드</button>
+              <div className="flex gap-4">
+                <button onClick={handleResetCode}>
+                  <RotateCcw />
+                </button>
+
+                <DarkModeToggle />
               </div>
             </div>
 
             <div className="border rounded">
               <CodeEditor code={code} setCode={setCode} language={monacoLang} />
-            </div>
-          </div>
-
-          <div className="border-t">
-            <button className="h-[60px] border border-1 border-neutral-800 text-black px-4 py-2 rounded">
-              실행 결과
-            </button>
-
-            <div className="h-60 border rounded p-2">
-              <p>...</p>
             </div>
           </div>
         </main>
