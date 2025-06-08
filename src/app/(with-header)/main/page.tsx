@@ -27,13 +27,8 @@ export default function UserDashboard() {
               Lv. 5
             </span>
           </div>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-            134 문제 해결
-          </p>
-          <Progress
-            value={60}
-            className="mt-3 h-3 bg-gray-200 dark:bg-neutral-700"
-          />
+
+          <Progress userId={3} />
         </div>
 
         <div className="flex flex-col md:flex-row gap-2">
