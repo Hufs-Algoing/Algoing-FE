@@ -15,6 +15,16 @@ export default function ActivityChart({
   activityData: ActivityData[];
 }) {
   const maxCount = Math.max(...activityData.map((d) => d.count));
+  // maxCount가 0이면 1로 설정하여 NaN 방지
+  const normalizedMaxCount = maxCount === 0 ? 1 : maxCount;
+
+  const getYPosition = (count: number) => {
+    if (normalizedMaxCount === 1 && maxCount === 0) {
+      // 모든 값이 0인 경우 중간 위치에 표시
+      return 200 - 60 - 40; // 중간 높이
+    }
+    return 200 - (count / normalizedMaxCount) * 120 - 40;
+  };
 
   return (
     <motion.div
@@ -51,19 +61,19 @@ export default function ActivityChart({
             </linearGradient>
           </defs>
           <path
-            d={`M 40 ${200 - (activityData[0].count / maxCount) * 120 - 40} ${activityData
+            d={`M 40 ${getYPosition(activityData[0].count)} ${activityData
               .map(
                 (point, index) =>
-                  `L ${40 + index * 50} ${200 - (point.count / maxCount) * 120 - 40}`
+                  `L ${40 + index * 50} ${getYPosition(point.count)}`
               )
               .join(" ")} L 390 160 L 40 160 Z`}
             fill="url(#areaGradient)"
           />
           <path
-            d={`M 40 ${200 - (activityData[0].count / maxCount) * 120 - 40} ${activityData
+            d={`M 40 ${getYPosition(activityData[0].count)} ${activityData
               .map(
                 (point, index) =>
-                  `L ${40 + index * 50} ${200 - (point.count / maxCount) * 120 - 40}`
+                  `L ${40 + index * 50} ${getYPosition(point.count)}`
               )
               .join(" ")}`}
             stroke="#6366f1"
@@ -74,7 +84,7 @@ export default function ActivityChart({
           />
           {activityData.map((point, index) => {
             const x = 40 + index * 50;
-            const y = 200 - (point.count / maxCount) * 120 - 40;
+            const y = getYPosition(point.count);
             return (
               <g key={index}>
                 <circle

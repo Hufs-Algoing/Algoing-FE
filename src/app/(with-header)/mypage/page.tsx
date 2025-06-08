@@ -21,7 +21,11 @@ function getRecentActivityData(zandi: ContributionDay[]) {
     const dateStr = d.toISOString().slice(0, 10);
     const count = zandi.find((c) => c.date === dateStr)?.count ?? 0;
     const day = d.toLocaleDateString("ko-KR", { weekday: "short" });
-    return { date: dateStr, count, day };
+    return {
+      date: dateStr,
+      count,
+      day,
+    };
   });
 }
 
@@ -37,9 +41,15 @@ export default function MyPage() {
     useReviewedProblems(userId);
   const { data: bookmarkedProblems = [], isLoading: isBookmarkedLoading } =
     useBookmarkedProblems(userId);
-  const { data: zandi = [] } = useZandi(userId);
+  const { data: zandi = [], isLoading: isZandiLoading } = useZandi(userId);
 
-  if (!userId || isSolvedLoading || isReviewedLoading || isBookmarkedLoading) {
+  if (
+    !userId ||
+    isSolvedLoading ||
+    isReviewedLoading ||
+    isBookmarkedLoading ||
+    isZandiLoading
+  ) {
     return <PageLoading />;
   }
 
@@ -53,7 +63,8 @@ export default function MyPage() {
     }, 100);
   };
 
-  const activityData = getRecentActivityData(zandi);
+  const activityData: { date: string; count: number; day: string }[] =
+    getRecentActivityData(zandi);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pt-20">
