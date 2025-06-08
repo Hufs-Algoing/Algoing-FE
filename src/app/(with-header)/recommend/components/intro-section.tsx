@@ -1,5 +1,5 @@
 export interface IntroSectionProps {
-  username: string;
+  username?: string;
   level: number;
   profileImage: string;
   stats?: {

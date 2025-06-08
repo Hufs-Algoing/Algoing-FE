@@ -1,38 +1,33 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import IntroSection from "./intro-section";
-import DailyRecommendSection from "../(problems)/tier-based-recommend";
-import IncProblemSection from "../(problems)/incproblem-recommend";
-import WeaknessSection from "../(problems)/weakness-recommend";
+import { useAllRecommendations } from "@/app/hook/recommend/use-all-recommend";
+import { PageLoading } from "@/app/_components/loading";
+import { RecommendSection } from "./recommend-section";
+import { BookOpen, Code, Sparkles } from "lucide-react";
 
-interface RecommendationContentProps {
-  searchParams: Promise<{ username?: string }>;
-}
-
-export default function RecommendationContent({
-  searchParams,
-}: RecommendationContentProps) {
+export default function RecommendationContent() {
   const [showSolved, setShowSolved] = useState(false);
-  const [username, setUsername] = useState<string>("사용자");
+  const userId = 3;
+  const { data: recommendationData, isLoading } = useAllRecommendations(
+    userId ?? 0
+  );
 
-  useEffect(() => {
-    searchParams.then((params) => {
-      setUsername(params.username || "사용자");
-    });
-  }, [searchParams]);
+  const daily = recommendationData?.dailyRecommendations ?? [];
+  const inc = recommendationData?.incProblemRecommendations ?? [];
+  const weak = recommendationData?.weaknessRecommendations ?? [];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <IntroSection
-        username={username}
+        // username={userId}
         level={1}
         profileImage=""
         streak={0}
         totalPoints={0}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Toggle Switch */}
         <div className="flex justify-end items-center mb-8">
           <span className="text-sm text-gray-600 mr-2">풀었던 문제 보기</span>
           <button
@@ -49,14 +44,30 @@ export default function RecommendationContent({
             />
           </button>
         </div>
-        {/* 티어 기반 맞춤 추천 문제 : 요청 받은 사용자의 티어와 선호 문제 유형을 기반으로 문제를 추천 */}
-        <DailyRecommendSection />
-        {/* 많이 틀린 문제 */}
-        <IncProblemSection />
-        {/* 약점을 기반 */}
-        <WeaknessSection />
+        <>
+          {isLoading ? (
+            <PageLoading />
+          ) : (
+            <>
+              <RecommendSection
+                title="티어 기반 맞춤 추천 문제"
+                icon={<Sparkles className="h-6 w-6" />}
+                problems={daily}
+              />
+              <RecommendSection
+                title="많이 틀린 문제 유형 기반 추천"
+                icon={<BookOpen className="h-6 w-6" />}
+                problems={inc}
+              />
+              <RecommendSection
+                title="약점을 보완할 문제들이에요"
+                icon={<Code className="h-6 w-6" />}
+                problems={weak}
+              />
+            </>
+          )}
+        </>
 
-        {/* Weekly Challenge */}
         <section className="mb-16">
           <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl overflow-hidden shadow-lg">
             <div className="p-8 md:p-10 flex flex-col md:flex-row items-center">

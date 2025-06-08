@@ -1,12 +1,16 @@
 "use client";
 
-import { useTierBasedRecommend } from "@/app/hook/recommend/use-tier-based";
+import { useAllRecommendations } from "@/app/hook/recommend/use-all-recommend";
 import { Award } from "lucide-react";
 import { useRouter } from "next/navigation";
 export default function RecommendedProblems() {
   const userId = 3;
-  const { data, isLoading, error } = useTierBasedRecommend(userId);
-  const router = useRouter();
+  const {
+    data: recommendationData,
+    isLoading,
+    error,
+  } = useAllRecommendations(userId ?? 0);
+
   if (isLoading) {
     return (
       <div className="text-center text-gray-500 py-12">
@@ -15,7 +19,7 @@ export default function RecommendedProblems() {
     );
   }
 
-  if (error || !data) {
+  if (error || !recommendationData) {
     return (
       <div className="text-center text-red-500 py-12">
         추천 문제를 불러오지 못했습니다.
@@ -23,7 +27,7 @@ export default function RecommendedProblems() {
     );
   }
 
-  const problems = Array.isArray(data) ? data : [];
+  const problems = recommendationData?.dailyRecommendations ?? [];
 
   if (problems.length === 0) {
     return (
