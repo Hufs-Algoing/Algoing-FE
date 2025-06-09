@@ -11,7 +11,7 @@ import Searchbar from "./Search";
 const menuItems = [
   { name: "추천 문제", path: "/recommend" },
   { name: "AI 리뷰", path: "/ai-review" },
-  { name: "마이페이지", path: "/mypage" },
+  { name: "내 활동", path: "/mypage" },
 ];
 
 export default function Header() {
