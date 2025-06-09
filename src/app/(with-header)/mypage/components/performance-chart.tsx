@@ -1,8 +1,14 @@
 "use client";
 
 import { useSolvedProblems } from "@/app/hook/mypage/use-solved";
-import { Trophy, Award } from "lucide-react";
+import { Trophy, PieChart } from "lucide-react";
 import { motion } from "framer-motion";
+import {
+  PieChart as RePieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+} from "recharts";
 
 interface Props {
   userId: number;
@@ -23,28 +29,14 @@ export function PerformanceChart({ userId }: Props) {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5);
 
-  const tagColors = [
-    { color: "from-emerald-400 to-emerald-600", bg: "bg-emerald-50" },
-    { color: "from-blue-400 to-blue-600", bg: "bg-blue-50" },
-    { color: "from-amber-400 to-amber-600", bg: "bg-amber-50" },
-    { color: "from-pink-400 to-pink-600", bg: "bg-pink-50" },
-    { color: "from-purple-400 to-purple-600", bg: "bg-purple-50" },
-    { color: "from-orange-400 to-orange-600", bg: "bg-orange-50" },
-    { color: "from-red-400 to-red-600", bg: "bg-red-50" },
-  ];
+  const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
 
-  const chartData = sortedTags.map(([tag, count], index) => {
-    const colorSet = tagColors[index % tagColors.length];
-    return {
-      tag,
-      solved: count,
-      color: colorSet.color,
-      bgColor: colorSet.bg,
-    };
-  });
+  const chartData = sortedTags.map(([tag, count]) => ({
+    name: tag,
+    value: count,
+  }));
 
-  //  가장 많이 푼 태그의 수 → 상대 퍼센트 기준
-  const maxSolved = Math.max(...chartData.map((d) => d.solved));
+  const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <motion.div
@@ -53,49 +45,73 @@ export function PerformanceChart({ userId }: Props) {
       transition={{ delay: 0.5 }}
       className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
     >
+      {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
           <Trophy className="h-5 w-5 text-yellow-500" />
           많이 푼 태그 TOP 5
         </h3>
-        <Award className="h-5 w-5 text-gray-400" />
+        <PieChart className="h-5 w-5 text-slate-400" />
       </div>
 
-      <div className="space-y-4">
-        {chartData.map((item, index) => (
-          <motion.div
-            key={item.tag}
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.6 + index * 0.1 }}
-            className={`flex items-center gap-4 p-3 rounded-xl ${item.bgColor} border border-gray-100`}
-          >
-            <span className="text-sm font-semibold text-gray-700 w-24 truncate">
-              {item.tag}
-            </span>
+      <p className="text-sm text-slate-500 mb-4">총 {total}개 문제</p>
 
-            <div className="flex-1 bg-gray-200 rounded-full h-3 overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{
-                  width:
-                    maxSolved > 0
-                      ? `${(item.solved / maxSolved) * 100}%`
-                      : "0%",
-                }}
-                transition={{ delay: 0.8 + index * 0.1, duration: 0.8 }}
-                className={`bg-gradient-to-r ${item.color} h-3 rounded-full shadow-sm`}
-              />
-            </div>
+      <div className="flex flex-col items-center gap-6">
+        {/* 파이 차트 */}
+        <div className="w-full max-w-xs">
+          <ResponsiveContainer width="100%" height={240}>
+            <RePieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                dataKey="value"
+                label={({ name, percent }) =>
+                  `${name} ${(percent * 100).toFixed(0)}%`
+                }
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+            </RePieChart>
+          </ResponsiveContainer>
+        </div>
+        {/* 범례 (가로 레이아웃) */}
+        {/* 범례 (가로 레이아웃 + 가장 많이 푼 태그 강조) */}
+        <div className="w-full flex flex-wrap justify-center gap-4 mt-4">
+          {chartData.map((entry, index) => {
+            const isTopTag = index === 0;
 
-            <span className="text-sm font-bold text-gray-700 w-10 text-right">
-              {item.solved}
-            </span>
-            <span className="text-xs text-gray-500 w-10 text-right">
-              {maxSolved > 0 ? Math.round((item.solved / maxSolved) * 100) : 0}%
-            </span>
-          </motion.div>
-        ))}
+            return (
+              <div
+                key={index}
+                className={`flex items-center gap-2 text-sm px-3 py-1 rounded-md shadow-sm
+          ${isTopTag ? "bg-blue-100 border border-blue-300" : "bg-slate-50"}
+        `}
+              >
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                />
+                <span
+                  className={`${
+                    isTopTag
+                      ? "text-blue-700 font-bold"
+                      : "text-slate-800 font-medium"
+                  }`}
+                >
+                  {entry.name}
+                </span>
+                <span className="text-slate-500">{entry.value}문제</span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </motion.div>
   );

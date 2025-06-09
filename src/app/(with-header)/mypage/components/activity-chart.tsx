@@ -1,126 +1,149 @@
 "use client";
 
-import { Calendar } from "lucide-react";
-import { motion } from "framer-motion";
+import { BarChart3 } from "lucide-react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  CartesianGrid,
+} from "recharts";
+import { useState } from "react";
 
-interface ActivityData {
-  date: string; // "2025-06-08"
-  count: number; // 문제 수
-  day: string; // 요일 (예: "월")
+interface CodeStatData {
+  readbility: number;
+  optimization: number;
+  duplicate: number;
+  normalizedReadbility: number;
+  normalizedOptimization: number;
+  normalizedDuplicate: number;
+  createdAt: string;
 }
 
-export default function ActivityChart({
-  activityData,
+export default function CodeAnalysisChart({
+  data = [],
 }: {
-  activityData: ActivityData[];
+  data: CodeStatData[];
 }) {
-  const maxCount = Math.max(...activityData.map((d) => d.count));
-  // maxCount가 0이면 1로 설정하여 NaN 방지
-  const normalizedMaxCount = maxCount === 0 ? 1 : maxCount;
+  const [, setHovered] = useState<null | number>(null);
 
-  const getYPosition = (count: number) => {
-    if (normalizedMaxCount === 1 && maxCount === 0) {
-      // 모든 값이 0인 경우 중간 위치에 표시
-      return 200 - 60 - 40; // 중간 높이
-    }
-    return 200 - (count / normalizedMaxCount) * 120 - 40;
+  if (!data || data.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden">
+        <div className="p-4 pb-2 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-indigo-500" />
+            <h2 className="text-lg font-semibold text-slate-900">
+              코드 품질 분석
+            </h2>
+          </div>
+          <p className="text-sm text-slate-500 mt-1">데이터가 없습니다</p>
+        </div>
+        <div className="p-4 h-[300px] flex items-center justify-center text-slate-400">
+          아직 분석된 코드가 없습니다
+        </div>
+      </div>
+    );
+  }
+
+  const chartData = data.map((item) => ({
+    date: new Date(item.createdAt).toLocaleDateString("ko-KR", {
+      month: "numeric",
+      day: "numeric",
+    }),
+    가독성: item.normalizedReadbility,
+    최적화: item.normalizedOptimization,
+    중복도: item.normalizedDuplicate,
+  }));
+
+  const calculateAverageStats = (key: keyof (typeof chartData)[0]) => {
+    const values = chartData.map((item) => item[key] as number);
+    const average = values.reduce((acc, cur) => acc + cur, 0) / values.length;
+    return { average };
   };
 
+  const readabilityStats = calculateAverageStats("가독성");
+  const optimizationStats = calculateAverageStats("최적화");
+  const duplicateStats = calculateAverageStats("중복도");
+
   return (
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.4 }}
-      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
-    >
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-indigo-500" />
-          주간 활동
-        </h3>
-        <div className="text-sm text-gray-500">최근 7일</div>
+    <div className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden">
+      <div className="p-4 pb-2 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <BarChart3 className="h-5 w-5 text-indigo-500" />
+          <h2 className="text-lg font-semibold text-slate-900">
+            코드 품질 분석
+          </h2>
+        </div>
+        <p className="text-sm text-slate-500 mt-1">
+          시간에 따른 코드 품질 변화 (전체 평균 기준)
+        </p>
       </div>
 
-      <div className="relative h-48 mb-4">
-        <svg className="w-full h-full" viewBox="0 0 400 200">
-          {[0, 1, 2, 3].map((line) => (
-            <line
-              key={line}
-              x1="40"
-              y1={40 + line * 40}
-              x2="380"
-              y2={40 + line * 40}
-              stroke="#f1f5f9"
-              strokeWidth="1"
+      <div className="p-4 space-y-4">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={chartData}
+            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            onMouseMove={(state) => {
+              if (state && state.activeTooltipIndex !== undefined) {
+                setHovered(state.activeTooltipIndex);
+              }
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis domain={[0, 100]} />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="가독성"
+              stroke="#6366f1"
+              strokeWidth={2}
+              dot
             />
-          ))}
-          <defs>
-            <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#6366f1" stopOpacity="0.05" />
-            </linearGradient>
-          </defs>
-          <path
-            d={`M 40 ${getYPosition(activityData[0].count)} ${activityData
-              .map(
-                (point, index) =>
-                  `L ${40 + index * 50} ${getYPosition(point.count)}`
-              )
-              .join(" ")} L 390 160 L 40 160 Z`}
-            fill="url(#areaGradient)"
-          />
-          <path
-            d={`M 40 ${getYPosition(activityData[0].count)} ${activityData
-              .map(
-                (point, index) =>
-                  `L ${40 + index * 50} ${getYPosition(point.count)}`
-              )
-              .join(" ")}`}
-            stroke="#6366f1"
-            strokeWidth="3"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {activityData.map((point, index) => {
-            const x = 40 + index * 50;
-            const y = getYPosition(point.count);
-            return (
-              <g key={index}>
-                <circle
-                  cx={x}
-                  cy={y}
-                  r="6"
-                  fill="#6366f1"
-                  stroke="white"
-                  strokeWidth="2"
-                />
-                <circle cx={x} cy={y} r="3" fill="white" />
-              </g>
-            );
-          })}
-          {activityData.map((point, index) => (
-            <text
-              key={index}
-              x={40 + index * 50}
-              y="190"
-              textAnchor="middle"
-              className="text-xs fill-gray-500"
-            >
-              {point.day}
-            </text>
-          ))}
-        </svg>
-      </div>
+            <Line
+              type="monotone"
+              dataKey="최적화"
+              stroke="#10b981"
+              strokeWidth={2}
+              dot
+            />
+            <Line
+              type="monotone"
+              dataKey="중복도"
+              stroke="#f59e0b"
+              strokeWidth={2}
+              dot
+            />
+          </LineChart>
+        </ResponsiveContainer>
 
-      <div className="flex items-center justify-between text-sm text-gray-600">
-        <span>
-          총 {activityData.reduce((sum, d) => sum + d.count, 0)} 문제 해결
-        </span>
-        <span className="flex items-center gap-1">
-          <div className="w-3 h-3 bg-indigo-500 rounded-full" /> 문제 수
-        </span>
+        <div className="grid grid-cols-3 gap-2">
+          <div className="flex flex-col items-center p-2 rounded-lg bg-slate-50">
+            <div className="text-xs text-slate-500 mb-1">가독성 (평균)</div>
+            <div className="font-semibold text-indigo-600">
+              {readabilityStats.average.toFixed(1)}
+            </div>
+          </div>
+          <div className="flex flex-col items-center p-2 rounded-lg bg-slate-50">
+            <div className="text-xs text-slate-500 mb-1">최적화 (평균)</div>
+            <div className="font-semibold text-emerald-600">
+              {optimizationStats.average.toFixed(1)}
+            </div>
+          </div>
+          <div className="flex flex-col items-center p-2 rounded-lg bg-slate-50">
+            <div className="text-xs text-slate-500 mb-1">중복도 (평균)</div>
+            <div className="font-semibold text-amber-600">
+              {duplicateStats.average.toFixed(1)}
+            </div>
+          </div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
