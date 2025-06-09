@@ -116,7 +116,7 @@ export default function UserDashboard() {
 
               {latestReview ? (
                 <Link href={`/ai-review?id=${latestReview.id}`}>
-                  <div className="bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg border dark:border-gray-700 text-sm flex flex-col gap-2 shadow-sm">
+                  <div className="bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col gap-2 hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                         문제 #{latestReview.problemNum}

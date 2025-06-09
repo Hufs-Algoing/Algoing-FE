@@ -9,7 +9,7 @@ import { BookOpen, Code, Sparkles } from "lucide-react";
 
 export default function RecommendationContent() {
   const [showSolved, setShowSolved] = useState(false);
-  const userId = 3;
+  const userId = 2;
   const { data: recommendationData, isLoading } = useAllRecommendations(
     userId ?? 0
   );
