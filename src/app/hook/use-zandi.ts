@@ -7,15 +7,18 @@ export interface ContributionDay {
   date: string;
   count: number;
 }
-
 export const useZandi = (userId: number) => {
   return useQuery<ContributionDay[]>({
     queryKey: ["zandi", userId],
     queryFn: async () => {
-      const query = `?userId=${userId}`;
-      return await apiGet<ContributionDay[]>(`/myinfo/zandi${query}`);
+      const response = await apiGet(`/myinfo/${userId}/zandi`);
+
+      // response 자체가 배열인 경우 → 배열 리턴
+      if (Array.isArray(response)) return response;
+
+      return [];
     },
-    enabled: !!userId, // userId가 있을 때만 실행
+    enabled: !!userId,
     staleTime: 1000 * 60 * 5,
   });
 };

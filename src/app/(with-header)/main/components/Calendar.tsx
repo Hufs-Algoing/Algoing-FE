@@ -23,18 +23,25 @@ export default function ContributionCalendar({
   const firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
+  // 날짜를 YYYY-MM-DD 형식으로 포맷
+  const formatDate = (year: number, month: number, day: number): string => {
+    const paddedMonth = String(month).padStart(2, "0");
+    const paddedDay = String(day).padStart(2, "0");
+    return `${year}-${paddedMonth}-${paddedDay}`;
+  };
+
   const calendarDays = Array(42)
     .fill(null)
     .map((_, index) => {
       const day = index - firstDay + 1;
       if (day > 0 && day <= daysInMonth) {
-        const dateObj = new Date(currentYear, currentMonth - 1, day);
-        const dateStr = dateObj.toLocaleDateString("sv-SE");
+        const dateStr = formatDate(currentYear, currentMonth, day);
 
         const contribution = contributions.find((c) => c.date === dateStr);
+
         return {
           day,
-          count: contribution?.count || 0,
+          count: contribution?.count ?? 0,
           date: dateStr,
         };
       }
@@ -74,7 +81,7 @@ export default function ContributionCalendar({
           <ChevronLeft className="h-4 w-4 text-gray-600" />
         </button>
         <h2 className="text-lg font-bold text-gray-900">
-          {currentYear}.{currentMonth}
+          {currentYear}.{String(currentMonth).padStart(2, "0")}
         </h2>
         <button
           onClick={handleNextMonth}
@@ -109,6 +116,7 @@ export default function ContributionCalendar({
                       "aspect-square rounded-lg transition-all duration-200 flex items-center justify-center text-xs font-medium",
                       day ? getColorClass(day.count) : "opacity-0"
                     )}
+                    title={day ? `${day.date}: ${day.count} solved` : undefined}
                   >
                     {day?.day}
                   </div>
