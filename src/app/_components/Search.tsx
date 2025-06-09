@@ -12,7 +12,7 @@ export default function Searchbar() {
   const [debouncedKeyword] = useDebounce(keyword, 300);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
-  const { data, isLoading, error } = useSearchProblems(
+  const { data, isLoading } = useSearchProblems(
     debouncedKeyword,
     !!debouncedKeyword
   );
@@ -77,7 +77,7 @@ export default function Searchbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full mt-2 w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 shadow-lg rounded-lg z-50 max-h-72 overflow-y-auto"
+            className="absolute top-full mt-2 w-full bg-white border border-gray-200  shadow-lg rounded-lg z-50 max-h-72 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-300 dark:scrollbar-thumb-neutral-700 scrollbar-track-transparent"
             onMouseDown={(e) => e.preventDefault()}
             style={{
               boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
@@ -87,12 +87,6 @@ export default function Searchbar() {
               <div className="p-6 flex flex-col items-center justify-center text-sm text-gray-500 dark:text-gray-400">
                 <Loader2 className="h-5 w-5 animate-spin mb-2" />
                 <span>검색 중...</span>
-              </div>
-            ) : error ? (
-              <div className="p-6 flex flex-col items-center justify-center text-sm text-red-500 dark:text-red-400">
-                <AlertCircle className="h-5 w-5 mb-2" />
-                <span>검색 중 오류 발생</span>
-                <span className="text-xs mt-1">{error.message}</span>
               </div>
             ) : hasResults ? (
               <div className="py-2">
