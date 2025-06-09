@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Send, Code, Bookmark } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type StatsCardsProps = {
   solvedCount: number;
@@ -16,6 +17,7 @@ export default function StatsCards({
   bookmarkedCount,
   onClickTab,
 }: StatsCardsProps) {
+  const router = useRouter();
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <motion.div
@@ -43,7 +45,10 @@ export default function StatsCards({
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        onClick={() => onClickTab("reviewed")}
+        onClick={() => {
+          onClickTab("reviewed");
+          router.push("/ai-review");
+        }}
         className="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 shadow-lg border border-purple-100 overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1"
       >
         <div className="absolute top-0 right-0 w-20 h-20 bg-purple-200/30 rounded-full -translate-y-10 translate-x-10"></div>
