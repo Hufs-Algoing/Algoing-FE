@@ -24,20 +24,16 @@ export default function Header() {
     >
       <div className="flex items-center gap-6 lg:gap-12">
         <Link href="/" className="hover:opacity-80 transition relative group">
-          <motion.div
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
+          <div>
             <Image
-              src={isDarkMode ? "/img/RealLogo.png" : "/img/RealLogo.png"}
+              src={"/img/RealLogo.png"}
               alt="ALGOING Logo"
               width={120}
               height={50}
               className="h-8 sm:h-9 w-auto"
             />
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
-          </motion.div>
+          </div>
         </Link>
 
         <nav className="hidden md:flex gap-1 lg:gap-2">
