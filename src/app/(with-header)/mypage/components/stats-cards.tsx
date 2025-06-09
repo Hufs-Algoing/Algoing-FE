@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Send, Code, Bookmark, TrendingUp } from "lucide-react";
+import { Send, Code, Bookmark } from "lucide-react";
 
 type StatsCardsProps = {
   solvedCount: number;
@@ -36,10 +36,6 @@ export default function StatsCards({
           <div className="text-3xl font-bold text-emerald-900 mb-2">
             {solvedCount}개
           </div>
-          <div className="text-sm text-emerald-600 flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" />
-            +2 이번 주
-          </div>
         </div>
       </motion.div>
 
@@ -61,10 +57,6 @@ export default function StatsCards({
           <div className="text-3xl font-bold text-purple-900 mb-2">
             {reviewedCount}개
           </div>
-          <div className="text-sm text-purple-600 flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" />
-            +1 이번 주
-          </div>
         </div>
       </motion.div>
 
@@ -85,10 +77,6 @@ export default function StatsCards({
           </div>
           <div className="text-3xl font-bold text-blue-900 mb-2">
             {bookmarkedCount}개
-          </div>
-          <div className="text-sm text-blue-600 flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" />
-            +1 이번 주
           </div>
         </div>
       </motion.div>

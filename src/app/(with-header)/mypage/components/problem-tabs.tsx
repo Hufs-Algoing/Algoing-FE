@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Send, Code, Bookmark } from "lucide-react";
 
 interface ProblemTabsProps {
@@ -34,67 +33,55 @@ export function ProblemTabs({
   bookmarkedProblems,
 }: ProblemTabsProps) {
   return (
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.6 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
-    >
-      {/* Tab Navigation */}
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      {/* 탭 메뉴 */}
       <div className="border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
         <nav className="flex">
-          <button
-            onClick={() => setActiveTab("submitted")}
-            className={`px-6 py-4 text-sm font-semibold border-b-3 transition-all duration-300 ${
-              activeTab === "submitted"
-                ? "border-indigo-500 text-indigo-600 bg-white shadow-sm"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Send className="h-4 w-4" />
-              제출한 문제 ({solvedProblems.length})
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("reviewed")}
-            className={`px-6 py-4 text-sm font-semibold border-b-3 transition-all duration-300 ${
-              activeTab === "reviewed"
-                ? "border-indigo-500 text-indigo-600 bg-white shadow-sm"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Code className="h-4 w-4" />
-              리뷰받은 문제 ({reviewedProblems.length})
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("bookmarked")}
-            className={`px-6 py-4 text-sm font-semibold border-b-3 transition-all duration-300 ${
-              activeTab === "bookmarked"
-                ? "border-indigo-500 text-indigo-600 bg-white shadow-sm"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Bookmark className="h-4 w-4" />
-              북마크한 문제 ({bookmarkedProblems.length})
-            </div>
-          </button>
+          {[
+            {
+              key: "submitted",
+              label: "제출한 문제",
+              icon: <Send />,
+              count: solvedProblems.length,
+            },
+            {
+              key: "reviewed",
+              label: "리뷰받은 문제",
+              icon: <Code />,
+              count: reviewedProblems.length,
+            },
+            {
+              key: "bookmarked",
+              label: "북마크한 문제",
+              icon: <Bookmark />,
+              count: bookmarkedProblems.length,
+            },
+          ].map(({ key, label, icon, count }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`px-6 py-4 text-sm font-semibold border-b-3 transition-all duration-300 ${
+                activeTab === key
+                  ? "border-indigo-500 text-indigo-600 bg-white shadow-sm"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                {icon}
+                {label} ({count})
+              </div>
+            </button>
+          ))}
         </nav>
       </div>
 
-      {/* Tab Content */}
+      {/* 탭 콘텐츠 */}
       <div className="p-6">
         {activeTab === "submitted" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {solvedProblems.map((problem, index) => (
-              <motion.div
+              <div
                 key={problem.submittedProblemId ?? `${problem.title}-${index}`}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
                 className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200 group"
               >
                 <div className="flex items-start justify-between mb-3">
@@ -105,22 +92,6 @@ export function ProblemTabs({
                     Lv. {problem.level}
                   </span>
                 </div>
-
-                {/* 태그 */}
-                {/* {problem.tag && (
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {problem.tag.split(",").map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-md font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )} */}
-
-                {/* 언어 / 제출일 */}
                 <div className="flex items-center justify-between text-xs">
                   <span
                     className={`px-2 py-1 rounded-md font-medium ${getLanguageColor(problem.language)}`}
@@ -131,19 +102,16 @@ export function ProblemTabs({
                     {problem.submittedDate}
                   </span>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
 
         {activeTab === "reviewed" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {reviewedProblems.map((problem, index) => (
-              <motion.div
+            {reviewedProblems.map((problem) => (
+              <div
                 key={problem.id}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
                 className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200 group"
               >
                 <div className="flex items-start justify-between mb-3">
@@ -154,28 +122,23 @@ export function ProblemTabs({
                     {problem.language}
                   </span>
                 </div>
-
                 <p className="text-sm text-gray-700 mb-2 line-clamp-2">
                   {problem.summary}
                 </p>
-
                 <div className="text-xs text-gray-500 font-medium">
                   리뷰 일자:{" "}
                   {new Date(problem.createdAt).toLocaleDateString("ko-KR")}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
 
         {activeTab === "bookmarked" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {bookmarkedProblems.map((problem, index) => (
-              <motion.div
+            {bookmarkedProblems.map((problem) => (
+              <div
                 key={problem.problemId}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: index * 0.05 }}
                 className="bg-white rounded-xl p-5 shadow hover:shadow-lg transition-transform duration-300 hover:-translate-y-1 border border-gray-200 group"
               >
                 <div className="flex items-start justify-between mb-3">
@@ -199,13 +162,12 @@ export function ProblemTabs({
                     </svg>
                   </div>
                 </div>
-
                 <div className="text-sm text-gray-500">{problem.problemId}</div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
