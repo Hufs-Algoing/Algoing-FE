@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useMyInfo } from "@/app/hook/user/useLoadUser";
 import { useEffect } from "react";
 import { useUserStore } from "@/app/_store/use-userStore";
+import { useLatestReviewedProblem } from "@/app/hook/problem/use-latest-reivewed-1";
 
 export default function UserDashboard() {
   const { data: myInfo } = useMyInfo();
@@ -22,6 +23,7 @@ export default function UserDashboard() {
     }
   }, [myInfo, setUser]);
 
+  const { data: latestReview } = useLatestReviewedProblem(3);
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="relative bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8 mb-16 border border-purple-100 dark:border-purple-800 shadow-xl overflow-hidden">
@@ -110,34 +112,41 @@ export default function UserDashboard() {
         <div className="flex flex-col gap-4">
           <div className="border dark:border-gray-700 rounded-xl p-4 h-[190px] flex flex-col justify-between">
             <div>
-              <h3 className="text-sm font-semibold mb-3">
-                새로 추가된 코드 리뷰 요청
-              </h3>
+              <h3 className="text-sm font-semibold mb-3">최근 AI 코드 리뷰</h3>
 
-              <div className="bg-gray-50 dark:bg-neutral-800 p-3 rounded-lg border dark:border-gray-700 text-sm flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs px-2 py-1 rounded-md bg-yellow-200 text-yellow-800 dark:bg-yellow-300 dark:text-yellow-900">
-                    골드 5
-                  </span>
+              {latestReview ? (
+                <Link href={`/ai-review?id=${latestReview.id}`}>
+                  <div className="bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg border dark:border-gray-700 text-sm flex flex-col gap-2 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                        문제 #{latestReview.problemNum}
+                      </span>
+                      <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded-md">
+                        {latestReview.language}
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-gray-800 dark:text-gray-200 font-medium line-clamp-2">
+                      {latestReview.summary}
+                    </p>
+
+                    <div className="flex justify-end text-xs text-gray-400 dark:text-gray-500">
+                      {new Date(latestReview.createdAt).toLocaleDateString(
+                        "ko-KR",
+                        {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        }
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ) : (
+                <div className="text-sm text-gray-400 dark:text-gray-600">
+                  최근 리뷰가 없습니다.
                 </div>
-
-                <p className="text-sm font-semibold mt-1 line-clamp-1">
-                  1916. 최소비용 구하기
-                </p>
-
-                <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
-                  시간초과가 계속 발생하는데 어떻게 해야할까요ㅠㅠ
-                </p>
-
-                <div className="flex justify-between items-center mt-1">
-                  <span className="text-xs text-blue-500 dark:text-blue-400">
-                    #그래프이론
-                  </span>
-                  <span className="text-xs text-gray-400 dark:text-gray-500">
-                    2025.03.25
-                  </span>
-                </div>
-              </div>
+              )}
             </div>
           </div>
 
