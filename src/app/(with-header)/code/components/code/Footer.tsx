@@ -7,11 +7,15 @@ import { useHint } from "@/app/hook/problem/use-getHint";
 
 interface FooterProps {
   onSubmitForReview: () => void;
+  onExecuteOnly: () => void;
 }
 
 const MAX_HINTS = 3;
 
-export default function Footer({ onSubmitForReview }: FooterProps) {
+export default function Footer({
+  onExecuteOnly,
+  onSubmitForReview,
+}: FooterProps) {
   const [showHint, setShowHint] = useState(false);
   const [hintOrder, setHintOrder] = useState(1);
   const [hintLogs, setHintLogs] = useState<string[]>([]);
@@ -97,7 +101,10 @@ export default function Footer({ onSubmitForReview }: FooterProps) {
 
       {/* 오른쪽: 실행 / 제출 */}
       <div className="flex items-center gap-3">
-        <button className="px-4 py-3 bg-gray-200 text-gray-700 rounded-md">
+        <button
+          onClick={onExecuteOnly}
+          className="px-4 py-3 bg-gray-200 text-gray-700 rounded-md"
+        >
           코드 실행
         </button>
         <button
