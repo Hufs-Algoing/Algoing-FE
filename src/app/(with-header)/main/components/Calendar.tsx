@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, CalendarCheck } from "lucide-react";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/app/_lib/utils";
 import { useZandi } from "@/app/hook/use-zandi";
 import { formatDate } from "@/app/_util/date";
 import { getGitHubColorClass } from "@/app/_util/color-class";

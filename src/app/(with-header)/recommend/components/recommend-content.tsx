@@ -5,7 +5,7 @@ import { useAllRecommendations } from "@/app/hook/recommend/use-all-recommend";
 import { PageLoading } from "@/app/_components/loading";
 import { BookOpen, Code, Sparkles } from "lucide-react";
 import { Suspense, lazy } from "react";
-import { mockMyInfo } from "../../main/page";
+import { mockMyInfo } from "@/app/_mock/myinfo";
 
 export default function RecommendationContent() {
   const userId = 22;

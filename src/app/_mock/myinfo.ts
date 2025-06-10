@@ -1,0 +1,15 @@
+export const mockMyInfo = {
+  bio: "",
+  bojId: "an290an",
+  createdAt: "2025-06-02T07:56:17.346838",
+  email: "ahr020532@gmail.com",
+  handle: null,
+  name: "google_103635454461245049460",
+  picture: "https://…",
+  role: "USER",
+  solvedCount: 0,
+  tier: 10,
+  token: null,
+  userId: 5,
+  userPoint: 0,
+};
