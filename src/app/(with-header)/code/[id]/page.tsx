@@ -8,7 +8,6 @@ import ProblemInfo from "@/app/(with-header)/code/components/code/ProblemInfo";
 import { useProblemSubmit } from "@/app/hook/problem/use-problem-submit";
 import { useParams } from "next/navigation";
 import { RotateCcw } from "lucide-react";
-import DarkModeToggle from "@/app/_components/DarkMode";
 import toast from "react-hot-toast";
 
 interface ExecutionResult {
@@ -124,9 +123,6 @@ export default function Code() {
               >
                 <RotateCcw className="w-6 h-6" />
               </button>
-
-              {/* 다크모드 토글 */}
-              <DarkModeToggle />
             </div>
           </div>
 

@@ -1,26 +1,78 @@
 "use client";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import { ArrowBigUpDashIcon, ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
 export default function LoginPage() {
   const handleGoogleLogin = () => {
     const GOOGLE_LOGIN_URL = `https://api.al-going.com/oauth2/authorization/google`;
     window.location.href = GOOGLE_LOGIN_URL;
   };
-  //TODO: 스크롤 이벤트 추가
+
+  const sectionsRef = useRef<HTMLElement[]>([]);
+  const scrollLockRef = useRef(false);
+  const [currentSection, setCurrentSection] = useState(0);
+
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      e.preventDefault();
+      if (scrollLockRef.current) return;
+
+      const deltaY = e.deltaY;
+      let nextIndex = deltaY > 0 ? currentSection + 1 : currentSection - 1;
+      nextIndex = Math.max(
+        0,
+        Math.min(sectionsRef.current.length - 1, nextIndex)
+      );
+      if (nextIndex === currentSection) return;
+
+      scrollLockRef.current = true;
+      sectionsRef.current[nextIndex]?.scrollIntoView({ behavior: "smooth" });
+      setCurrentSection(nextIndex);
+
+      setTimeout(() => {
+        scrollLockRef.current = false;
+      }, 700);
+    },
+    [currentSection]
+  );
+
+  useEffect(() => {
+    const container = document.getElementById("scroll-container");
+    container?.addEventListener("wheel", handleWheel, { passive: false });
+    return () => {
+      container?.removeEventListener("wheel", handleWheel);
+    };
+  }, [handleWheel]);
+
+  const setSectionRef = (el: HTMLElement | null, index: number) => {
+    if (el) sectionsRef.current[index] = el;
+  };
+
+  const scrollToTop = () => {
+    if (sectionsRef.current[0]) {
+      sectionsRef.current[0].scrollIntoView({ behavior: "smooth" });
+      setCurrentSection(0);
+    }
+  };
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-100 via-purple-50 to-pink-100">
-      <section className="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8">
+    <div
+      id="scroll-container"
+      className="min-h-screen bg-gradient-to-b from-indigo-100 via-purple-50 to-pink-100"
+    >
+      <section
+        ref={(el) => setSectionRef(el, 0)}
+        className="min-h-screen flex flex-col lg:flex-row justify-center items-center px-4 py-8"
+      >
         <div className="flex-1 max-w-2xl space-y-8 text-center lg:text-left">
           <div className="space-y-6 mr-24">
             <div className="flex items-center justify-center space-x-2">
               <Image
-                src="/img/Logo.svg"
+                src="/img/main-logo.png"
                 alt="algoing"
-                width={100}
+                width={140}
                 height={100}
                 className="w-52 drop-shadow-md"
               />
-              <span className="text-3xl font-semibold">으로,</span>
             </div>
 
             <div className="space-y-4 text-center justify-center">
@@ -32,10 +84,10 @@ export default function LoginPage() {
                 </span>
               </h1>
 
-              <p className="text-lg text-slate-600 leading-relaxed max-w-lg">
-                매일 3문제씩 체계적으로 학습하고,
+              <p className="text-lg text-slate-600 leading-relaxed max-w-lg ml-8">
+                AI 코드리뷰 받고, 통계 분석을 통해
                 <br />
-                실력을 단계별로 향상시켜보세요
+                실력을 체계적으로 향상시켜보세요
               </p>
             </div>
           </div>
@@ -46,7 +98,7 @@ export default function LoginPage() {
             <div className="space-y-6">
               <div className="text-center space-y-2">
                 <h2 className="text-2xl font-bold text-slate-900">시작하기</h2>
-                <p className="text-slate-600">모든 기능을 체험해보세요</p>
+                <p className="text-slate-600">모든 기능을 사용해보세요</p>
               </div>
 
               <button
@@ -92,7 +144,10 @@ export default function LoginPage() {
       </section>
 
       {/* 두 번째 섹션 - 실시간 문제 추천 */}
-      <section className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content">
+      <section
+        ref={(el) => setSectionRef(el, 1)}
+        className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex-1 max-w-xl space-y-6 order-2 lg:order-1 text-center lg:text-left">
@@ -126,7 +181,10 @@ export default function LoginPage() {
       </section>
 
       {/* 세 번째 섹션 - 실시간 코�� 실행과 힌트 */}
-      <section className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content">
+      <section
+        ref={(el) => setSectionRef(el, 2)}
+        className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex-1 max-w-lg mb-8 lg:mb-0">
@@ -161,7 +219,10 @@ export default function LoginPage() {
       </section>
 
       {/* 네 번째 섹션 - 코드 품질 분석 */}
-      <section className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content">
+      <section
+        ref={(el) => setSectionRef(el, 3)}
+        className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex-1 max-w-xl space-y-6 order-2 lg:order-1 text-center lg:text-left">
@@ -173,16 +234,16 @@ export default function LoginPage() {
                 </span>
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed">
-                작성한 코드의 품질을 자동으로 분석하고,
+                작성한 코드의 품질을 분석하고,
                 <br />
-                개선점과 최적화 방법을 상세한 통계로 제공합니다.
+                많이 푼 문제 종류를 통계로 제공합니다.
               </p>
             </div>
 
             <div className="flex-1 max-w-lg order-1 lg:order-2 mb-8 lg:mb-0">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 transform transition-all duration-500 hover:scale-105">
                 <Image
-                  src="/img/section.png"
+                  src="/img/section4.png"
                   alt="코드 품질 분석 차트"
                   width={500}
                   height={400}
@@ -195,14 +256,17 @@ export default function LoginPage() {
       </section>
 
       {/* 다섯 번째 섹션 - 학습 관리 */}
-      <section className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content">
+      <section
+        ref={(el) => setSectionRef(el, 4)}
+        className="min-h-screen flex flex-col justify-center items-center px-6 py-12 section-content"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex-1 max-w-lg mb-8 lg:mb-0">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 transform transition-all duration-500 hover:scale-105">
                 <Image
-                  src="/img/section.png"
-                  alt="학습 진도 관리"
+                  src="/img/section5.png"
+                  alt="학습 기록 관리"
                   width={500}
                   height={400}
                   className="w-full h-auto rounded-xl"
@@ -212,21 +276,30 @@ export default function LoginPage() {
 
             <div className="flex-1 max-w-xl space-y-6 text-center lg:text-left ml-8">
               <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
-                체계적인 학습 관리와
+                제출한 문제와
                 <br />
                 <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  상세한 진도 추적
+                  북마크한 문제를
                 </span>
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed">
-                학습 진도를 시각적으로 확인하고,
+                시각적으로 확인하고,
                 <br />
-                부족한 부분을 집중적으로 보완하세요.
+                어려웠던 문제를 집중적으로 보완하세요.
               </p>
             </div>
           </div>
         </div>
       </section>
+      {currentSection === sectionsRef.current.length - 1 && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-700 transition"
+          aria-label="Scroll to top"
+        >
+          <ArrowBigUpDashIcon />
+        </button>
+      )}
     </div>
   );
 }

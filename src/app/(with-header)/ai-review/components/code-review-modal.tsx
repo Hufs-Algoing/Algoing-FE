@@ -12,16 +12,10 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { getLanguageForHighlighter } from "@/app/_util/get-language-highlight";
 
-import {
-  Code,
-  Bot,
-  Calendar,
-  Hash,
-  Award,
-  CheckCircle,
-  AlertCircle,
-  Lightbulb,
-} from "lucide-react";
+import { Code, Bot, Calendar, Hash } from "lucide-react";
+import { getLanguageColor } from "@/app/_util/get-language-color";
+import { getTierColor } from "@/app/_util/get-tier-color";
+import { getTierName } from "@/app/_util/get-tier-name";
 
 interface CodeReviewModalProps {
   isOpen: boolean;
@@ -37,6 +31,7 @@ interface CodeReviewModalProps {
     title?: string;
     baekjoonTier?: string;
     algorithmType?: string;
+    level?: number;
   } | null;
 }
 
@@ -46,17 +41,6 @@ export function CodeReviewModal({
   review,
 }: CodeReviewModalProps) {
   if (!review) return null;
-
-  const getLanguageColor = (language: string) => {
-    const colors: Record<string, string> = {
-      javascript: "bg-yellow-100 text-yellow-800",
-      python: "bg-blue-100 text-blue-800",
-      java: "bg-red-100 text-red-800",
-      cpp: "bg-purple-100 text-purple-800",
-      c: "bg-gray-100 text-gray-800",
-    };
-    return colors[language.toLowerCase()] || "bg-gray-100 text-gray-800";
-  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString("ko-KR", {
@@ -68,47 +52,17 @@ export function CodeReviewModal({
     });
   };
 
-  const parseAISummary = (summary: string) => {
-    // AI 리뷰를 섹션별로 파싱 (실제 구현에서는 더 정교한 파싱이 필요할 수 있음)
-    const sections = {
-      strengths: [] as string[],
-      improvements: [] as string[],
-      suggestions: [] as string[],
-      overall: summary,
-    };
-
-    // 간단한 파싱 로직 (실제로는 AI 응답 형식에 맞춰 조정 필요)
-    if (summary.includes("장점") || summary.includes("잘한 점")) {
-      sections.strengths.push("코드 구조가 깔끔합니다");
-      sections.strengths.push("알고리즘 선택이 적절합니다");
-    }
-
-    if (summary.includes("개선") || summary.includes("수정")) {
-      sections.improvements.push("변수명을 더 명확하게 작성해보세요");
-      sections.improvements.push("주석을 추가하여 가독성을 높여보세요");
-    }
-
-    sections.suggestions.push("시간 복잡도를 고려한 최적화를 시도해보세요");
-    sections.suggestions.push("엣지 케이스 처리를 강화해보세요");
-
-    return sections;
-  };
-
-  const aiAnalysis = parseAISummary(review.summary);
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-6xl">
       <div className="flex flex-col h-full max-h-[90vh]">
-        {/* Header */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-start justify-between mb-4">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex gap-2">
                 {review.title || `문제 #${review.problemNum}`}
-                {review.baekjoonTier && (
-                  <Badge variant="outline">
-                    <Award className="h-3 w-3 mr-1" />
-                    {review.baekjoonTier}
+                {typeof review.level === "number" && (
+                  <Badge className={getTierColor(review.level)}>
+                    {getTierName(review.level)}
                   </Badge>
                 )}
               </h2>
@@ -123,7 +77,7 @@ export function CodeReviewModal({
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2 mr-8">
+            <div className="flex items-center gap-2 mr-2">
               <Badge className={getLanguageColor(review.language)}>
                 <Code className="h-3 w-3 mr-1" />
                 {review.language.toUpperCase()}
@@ -188,76 +142,13 @@ export function CodeReviewModal({
                 <CardContent className="space-y-4">
                   {/* Overall Summary */}
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h4 className="font-medium text-blue-900 mb-2">
+                    <h4 className="font-semibold text-blue-900 mb-2">
                       전체 평가
                     </h4>
                     <p className="text-sm text-blue-800 leading-relaxed">
                       {review.summary}
                     </p>
                   </div>
-
-                  {/* Strengths */}
-                  {aiAnalysis.strengths.length > 0 && (
-                    <div className="space-y-2">
-                      <h4 className="flex items-center gap-2 font-medium text-green-700">
-                        <CheckCircle className="h-4 w-4" />
-                        잘한 점
-                      </h4>
-                      <ul className="space-y-1">
-                        {aiAnalysis.strengths.map((strength, index) => (
-                          <li
-                            key={index}
-                            className="text-sm text-gray-700 flex items-start gap-2"
-                          >
-                            <span className="text-green-500 mt-1">•</span>
-                            {strength}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Improvements */}
-                  {aiAnalysis.improvements.length > 0 && (
-                    <div className="space-y-2">
-                      <h4 className="flex items-center gap-2 font-medium text-orange-700">
-                        <AlertCircle className="h-4 w-4" />
-                        개선점
-                      </h4>
-                      <ul className="space-y-1">
-                        {aiAnalysis.improvements.map((improvement, index) => (
-                          <li
-                            key={index}
-                            className="text-sm text-gray-700 flex items-start gap-2"
-                          >
-                            <span className="text-orange-500 mt-1">•</span>
-                            {improvement}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Suggestions */}
-                  {aiAnalysis.suggestions.length > 0 && (
-                    <div className="space-y-2">
-                      <h4 className="flex items-center gap-2 font-medium text-purple-700">
-                        <Lightbulb className="h-4 w-4" />
-                        제안사항
-                      </h4>
-                      <ul className="space-y-1">
-                        {aiAnalysis.suggestions.map((suggestion, index) => (
-                          <li
-                            key={index}
-                            className="text-sm text-gray-700 flex items-start gap-2"
-                          >
-                            <span className="text-purple-500 mt-1">•</span>
-                            {suggestion}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             </div>

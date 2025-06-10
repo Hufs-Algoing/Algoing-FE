@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Searchbar from "./Search";
 import Logo from "../icon/main-logo.svg";
+import { useUserStore } from "../_store/use-userStore";
+
 const menuItems = [
   { name: "추천 문제", path: "/recommend" },
   { name: "AI 리뷰", path: "/ai-review" },
@@ -17,7 +19,7 @@ const menuItems = [
 export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const { picture } = useUserStore();
   return (
     <header
       className={`fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-8 lg:px-24 py-3 transition-all duration-300 bg-white dark:bg-neutral-900`}
@@ -38,10 +40,10 @@ export default function Header() {
               className="relative px-3 py-2 group"
             >
               <span
-                className={`text-sm font-medium transition-colors duration-200 relative z-10 ${
+                className={`text-sm font-bold transition-colors duration-200 relative z-10 ${
                   pathname === item.path
-                    ? "text-indigo-600 dark:text-indigo-400 font-semibold"
-                    : "text-gray-700 dark:text-gray-300"
+                    ? "text-indigo-600 dark:text-indigo-400 font-bold"
+                    : "text-gray-700 dark:text-gray-300 font-semibold"
                 } group-hover:text-indigo-600 dark:group-hover:text-indigo-400`}
               >
                 {item.name}
@@ -109,7 +111,7 @@ export default function Header() {
             className="relative"
           >
             <Image
-              src="/profile5.png"
+              src={picture || "/default.png"}
               alt="프로필"
               width={50}
               height={50}

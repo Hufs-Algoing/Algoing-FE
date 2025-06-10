@@ -7,6 +7,8 @@ import { SolvedProblem } from "@/app/_api/mypage/solved";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { getLanguageForHighlighter } from "@/app/_util/get-language-highlight";
+import { getTierName } from "@/app/_util/get-tier-name";
+import { getTierColor } from "@/app/_util/get-tier-color";
 
 interface Submission extends SolvedProblem {
   submittedDate: string;
@@ -61,8 +63,10 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
         <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-blue-50">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-1 text-xs font-bold rounded-lg bg-indigo-100 text-indigo-700 border border-indigo-200">
-                Lv. {problem.level}
+              <span
+                className={`text-xs px-2 py-1 rounded-md font-semibold ${getTierColor(problem.level)}`}
+              >
+                {getTierName(problem.level)}
               </span>
               <span
                 className={`px-2 py-1 rounded-md text-xs font-medium ${getLanguageColor(
@@ -122,7 +126,7 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
               <h4 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                 제출한 코드
                 {problem.submissions?.length > 1 && (
-                  <span className="text-sm font-normal text-gray-500">
+                  <span className="text-sm font-normal text-gray-700">
                     ({currentSubmissionIndex + 1}번째 제출)
                   </span>
                 )}

@@ -1,6 +1,8 @@
 "use client";
 
 import { Badge } from "@/app/_components/Badge";
+import { getTierColor } from "@/app/_util/get-tier-color";
+import { getTierName } from "@/app/_util/get-tier-name";
 
 interface ProblemCardProps {
   id: number;
@@ -30,12 +32,16 @@ const ProblemCard = ({
         <div
           className={`flex items-center justify-center w-15 h-8 rounded-md whitespace-nowrap`}
         >
-          <Badge variant="secondary">Lv. {level}</Badge>
+          <span
+            className={`text-xs px-2 py-1 rounded-full font-semibold ${getTierColor(level)}`}
+          >
+            {getTierName(level)}
+          </span>
         </div>
       </div>
       {tags.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-1">
-          {tags.map((tag) => (
+          {tags.slice(0, 5).map((tag) => (
             <Badge key={tag} variant="outline">
               {tag}
             </Badge>
