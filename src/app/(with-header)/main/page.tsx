@@ -42,22 +42,21 @@ export default function UserDashboard() {
   const myInfo = isLocalEnvironment() ? mockMyInfo : apiMyInfo;
 
   useEffect(() => {
-    console.log("✅ useEffect 진입");
     if (myInfo) {
-      console.log("✅ myinfo 데이터:", myInfo);
-      console.log("✅ 로컬 환경:", isLocalEnvironment());
+      console.log("myinfo 데이터:", myInfo);
+      console.log("로컬 환경:", isLocalEnvironment());
       setUser(myInfo); // Zustand store에 저장
     }
   }, [myInfo, setUser]);
 
-  const { data: latestReview } = useLatestReviewedProblem(19);
+  const { data: latestReview } = useLatestReviewedProblem(22);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
       <UserProfileCard user={myInfo} />
       <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6">
         <div className="border dark:border-gray-700 rounded-xl p-4">
-          <ContributionCalendar userId={19} year={2025} month={6} />
+          <ContributionCalendar userId={22} year={2025} month={6} />
         </div>
 
         <div className="flex flex-col gap-4">
@@ -94,7 +93,7 @@ export default function UserDashboard() {
                   </div>
                 </Link>
               ) : (
-                <div className="text-sm text-gray-400 dark:text-gray-600">
+                <div className="text-sm text-center pt-8 text-gray-400 dark:text-gray-600">
                   최근 리뷰가 없습니다.
                 </div>
               )}

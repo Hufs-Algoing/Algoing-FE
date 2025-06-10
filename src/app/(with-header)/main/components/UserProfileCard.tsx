@@ -7,10 +7,15 @@ import ProgressFromSolved from "./Progress";
 import { getTierName } from "@/app/_util/get-tier-name";
 import { getTierColor } from "@/app/_util/get-tier-color";
 import { Sparkle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function UserProfileCard({ user }: { user: any }) {
   const tierName = getTierName(user.tier);
   const tierColor = getTierColor(user.tier);
+  const router = useRouter();
+  const handleClick = () => {
+    router.push("/mypage");
+  };
 
   return (
     <motion.div
@@ -63,7 +68,10 @@ export default function UserProfileCard({ user }: { user: any }) {
 
         {/* 버튼 */}
         <div className="flex flex-col gap-2 mt-18 md:mt-0">
-          <button className="group relative px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg font-semibold text-sm shadow hover:shadow-xl hover:scale-105 transition-all">
+          <button
+            onClick={handleClick}
+            className="group relative px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg font-semibold text-sm shadow hover:shadow-xl hover:scale-105 transition-all"
+          >
             <FaChartLine className="inline-block mr-2" />내 활동
           </button>
         </div>

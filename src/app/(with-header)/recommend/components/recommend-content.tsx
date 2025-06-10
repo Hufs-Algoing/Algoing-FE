@@ -8,7 +8,7 @@ import { Suspense, lazy } from "react";
 import { mockMyInfo } from "../../main/page";
 
 export default function RecommendationContent() {
-  const userId = 19;
+  const userId = 22;
   const { data: recommendationData, isLoading } = useAllRecommendations(
     userId ?? 0
   );
@@ -28,22 +28,7 @@ export default function RecommendationContent() {
         totalPoints={0}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex justify-end items-center mb-8">
-          {/* <span className="text-sm text-gray-600 mr-2">풀었던 문제 보기</span>
-          <button
-            type="button"
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-              showSolved ? "bg-indigo-600" : "bg-gray-200"
-            }`}
-            onClick={() => setShowSolved(!showSolved)}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                showSolved ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button> */}
-        </div>
+        <div className="flex justify-end items-center mb-8"></div>
         <>
           {isLoading ? (
             <PageLoading />

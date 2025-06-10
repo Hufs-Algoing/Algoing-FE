@@ -33,7 +33,7 @@ export default function AICodeReviewList() {
 
   const filterOptions = [
     { id: "all", label: "전체", icon: <Filter className="h-4 w-4" /> },
-    { id: "gold", label: "골드 이상", icon: <Award className="h-4 w-4" /> },
+    { id: "Gold", label: "골드 이상", icon: <Award className="h-4 w-4" /> },
   ];
 
   const reviews = data || [];
@@ -52,14 +52,15 @@ export default function AICodeReviewList() {
 
   const mergedReviews = reviews.map((review, index) => {
     const problem = problemQueries[index]?.data;
-    const level = problem?.level;
+    const levelNum = Number(problem?.level);
+
     return {
       ...review,
       title: problem?.title || "제목 불러오는 중...",
       isHighlighted: false,
       problemNumber: problem?.problemId,
-      baekjoonTier:
-        typeof level === "number" ? getTierName(level) : "알 수 없음",
+      baekjoonTier: getTierName(levelNum), // 문자열 변환
+      level: levelNum,
       algorithmType: problem?.tagNames?.split(",")[0] || "알 수 없음",
       tags: problem?.tagNames?.split(",") || [],
       date: new Date(review.createdAt).toLocaleDateString(),
@@ -95,15 +96,15 @@ export default function AICodeReviewList() {
     setSelectedReview(null);
   };
 
-  const getTierBadge = (tier: string, level?: number) => {
-    return (
-      <span
-        className={`px-2 py-1 rounded-md text-xs font-medium ${getTierColor(level ?? 0)}`}
-      >
-        {tier}
-      </span>
-    );
-  };
+  // const getTierBadge = (tier: string, level?: number) => {
+  //   return (
+  //     <span
+  //       className={`px-2 py-1 rounded-md text-xs font-medium ${getTierColor(level ?? 0)}`}
+  //     >
+  //       {tier}
+  //     </span>
+  //   );
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -244,11 +245,11 @@ export default function AICodeReviewList() {
                       </div>
 
                       <div className="col-span-2 text-center">
-                        {review.baekjoonTier &&
-                          getTierBadge(
-                            review.baekjoonTier,
-                            problemQueries[index]?.data?.level
-                          )}
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full font-semibold ${getTierColor(problemQueries[index]?.data?.level ?? 0)}`}
+                        >
+                          {getTierName(problemQueries[index]?.data?.level ?? 0)}
+                        </span>
                       </div>
 
                       <div className="col-span-2 text-center">
@@ -305,11 +306,13 @@ export default function AICodeReviewList() {
                         </span>
 
                         <div className="col-span-2 text-center">
-                          {review.baekjoonTier &&
-                            getTierBadge(
-                              review.baekjoonTier,
-                              problemQueries[index]?.data?.level
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full font-semibold ${getTierColor(problemQueries[index]?.data?.level ?? 0)}`}
+                          >
+                            {getTierName(
+                              problemQueries[index]?.data?.level ?? 0
                             )}
+                          </span>
                         </div>
 
                         <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-50 text-gray-700">

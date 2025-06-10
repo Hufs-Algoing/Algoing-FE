@@ -1,5 +1,4 @@
-// 티어 이름 변환 함수
-export function getTierName(tier: number): string {
+export function getTierName(tier: number | string | undefined): string {
   const names = [
     "Unrated",
     "Bronze 5",
@@ -33,5 +32,9 @@ export function getTierName(tier: number): string {
     "Ruby 2",
     "Ruby 1",
   ];
-  return names[tier] || "Unrated";
+
+  const idx = Number(tier);
+  return Number.isFinite(idx) && idx >= 0 && idx < names.length
+    ? names[idx]
+    : "Unrated";
 }
