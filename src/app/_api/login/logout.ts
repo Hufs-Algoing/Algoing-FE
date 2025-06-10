@@ -1,5 +1,13 @@
-import { apiPost } from "../methods";
+import axiosInstance from "../instance";
 
 export const logoutApi = async (): Promise<void> => {
-  await apiPost<void>("/logout");
+  const response = await axiosInstance.post<void>(
+    "/auth/logout",
+    {},
+    { validateStatus: () => true }
+  );
+
+  if (response.status !== 200) {
+    throw new Error(`로그아웃 실패:  ${response.status}`);
+  }
 };
