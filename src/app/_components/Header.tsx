@@ -10,7 +10,6 @@ import Searchbar from "./Search";
 import Logo from "../icon/main-logo.svg";
 import { useUserStore } from "../_store/use-userStore";
 import { logoutApi } from "../_api/login/logout";
-import { useRouter } from "next/navigation";
 
 const menuItems = [
   { name: "추천 문제", path: "/recommend" },
@@ -24,7 +23,6 @@ export default function Header() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { picture, username } = useUserStore();
   const profileMenuRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
   const clearUser = useUserStore((state) => state.clearUser);
 
   useEffect(() => {
@@ -51,7 +49,8 @@ export default function Header() {
       clearUser();
       setIsProfileMenuOpen(false);
 
-      router.push("/login");
+      // router.push("/login");
+      console.error("로그아웃 성공");
     } catch (err) {
       console.error("로그아웃 실패:", err);
     }
