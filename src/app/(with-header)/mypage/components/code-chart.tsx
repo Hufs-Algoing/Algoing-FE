@@ -37,7 +37,7 @@ export default function CodeAnalysisChart({
           <div className="flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-indigo-500" />
             <h2 className="text-lg font-semibold text-slate-900">
-              코드 품질 분석
+              코드 품질 분석 추이
             </h2>
           </div>
           <p className="text-sm text-slate-500 mt-1">데이터가 없습니다</p>
