@@ -13,6 +13,7 @@ export interface MyInfoResponse {
   solvedCount: number;
   userPoint: number;
   createdAt: string;
+  username: string;
 }
 
 export const getMyInfo = async (): Promise<MyInfoResponse> => {

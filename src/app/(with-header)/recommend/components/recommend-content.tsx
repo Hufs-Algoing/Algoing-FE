@@ -6,12 +6,14 @@ import { PageLoading } from "@/app/_components/loading";
 import { BookOpen, Code, Sparkles } from "lucide-react";
 import { Suspense, lazy } from "react";
 import { mockMyInfo } from "@/app/_mock/myinfo";
+// import { useUserStore } from "@/app/_store/use-userStore";
 
 export default function RecommendationContent() {
-  const userId = 22;
+  const userId = 3;
   const { data: recommendationData, isLoading } = useAllRecommendations(
     userId ?? 0
   );
+  // const { username } = useUserStore();
 
   const daily = recommendationData?.dailyRecommendations ?? [];
   const inc = recommendationData?.incProblemRecommendations ?? [];
@@ -21,7 +23,7 @@ export default function RecommendationContent() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <IntroSection
-        username={mockMyInfo.name}
+        username={mockMyInfo.username}
         level={1}
         profileImage=""
         streak={0}

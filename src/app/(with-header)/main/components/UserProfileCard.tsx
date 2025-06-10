@@ -51,9 +51,7 @@ export default function UserProfileCard({ user }: { user: any }) {
           <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-600 dark:text-gray-300 mt-2">
             <div className="flex items-center gap-2">
               <FaCode className="text-blue-500" />
-              <span className="font-semibold">
-                {user.solvedCount ?? 0} 문제 해결
-              </span>
+              <span className="font-semibold">{26} 문제 해결</span>
             </div>
 
             <div className="text-xs text-gray-400">
@@ -66,7 +64,6 @@ export default function UserProfileCard({ user }: { user: any }) {
           </div>
         </div>
 
-        {/* 버튼 */}
         <div className="flex flex-col gap-2 mt-18 md:mt-0">
           <button
             onClick={handleClick}

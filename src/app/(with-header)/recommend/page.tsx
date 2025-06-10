@@ -7,7 +7,7 @@ import {
 import RecommendationContent from "./components/recommend-content";
 
 export default async function RecommendationPage() {
-  const userId = 22;
+  const userId = 3;
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
