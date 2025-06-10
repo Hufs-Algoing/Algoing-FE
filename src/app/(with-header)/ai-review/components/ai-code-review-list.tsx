@@ -10,7 +10,6 @@ import {
   Filter,
   Award,
   Calendar,
-  Hash,
   Tag,
 } from "lucide-react";
 import { useReviewedProblems } from "@/app/hook/review/use-review-list";
@@ -20,6 +19,8 @@ import {
   type ProblemDetailResponse,
 } from "@/app/_api/problem/problemInfo";
 import { CodeReviewModal } from "@/app/(with-header)/ai-review/components/code-review-modal";
+import { getTierColor } from "@/app/_util/get-tier-color";
+import { getTierName } from "@/app/_util/get-tier-name";
 
 export default function AICodeReviewList() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
@@ -32,7 +33,9 @@ export default function AICodeReviewList() {
 
   const filterOptions = [
     { id: "all", label: "전체", icon: <Filter className="h-4 w-4" /> },
-    { id: "gold", label: "골드 이상", icon: <Award className="h-4 w-4" /> },
+    { id: "Bronze", label: "브론즈", icon: <Award className="h-4 w-4" /> },
+    { id: "Silver", label: "실버", icon: <Award className="h-4 w-4" /> },
+    { id: "Gold", label: "골드 이상", icon: <Award className="h-4 w-4" /> },
   ];
 
   const reviews = data || [];
@@ -51,21 +54,16 @@ export default function AICodeReviewList() {
 
   const mergedReviews = reviews.map((review, index) => {
     const problem = problemQueries[index]?.data;
+    const levelNum = Number(problem?.level);
     return {
       ...review,
       title: problem?.title || "제목 불러오는 중...",
       isHighlighted: false,
       problemNumber: problem?.problemId,
-      baekjoonTier: problem?.level
-        ? ["브론즈", "실버", "골드", "플래티넘", "다이아", "루비"][
-            Math.floor(problem.level / 5)
-          ] +
-          " " +
-          (problem.level % 5 || 5)
-        : "알 수 없음",
+      baekjoonTier: getTierName(levelNum), // 문자열 변환
+      level: levelNum,
       algorithmType: problem?.tagNames?.split(",")[0] || "알 수 없음",
       tags: problem?.tagNames?.split(",") || [],
-      difficulty: problem?.level ? `Lv.${problem.level}` : "-",
       date: new Date(review.createdAt).toLocaleDateString(),
       status: "completed",
     };
@@ -73,16 +71,15 @@ export default function AICodeReviewList() {
 
   const filteredReviews = mergedReviews.filter((review) => {
     if (selectedFilter === "all") return true;
-    if (selectedFilter === "completed") return review.status === "completed";
-    if (selectedFilter === "in-progress")
-      return review.status === "in-progress";
-    if (selectedFilter === "failed") return review.status === "failed";
-    if (selectedFilter === "gold")
-      return (
-        review.baekjoonTier?.includes("골드") ||
-        review.baekjoonTier?.includes("플래티넘") ||
-        review.baekjoonTier?.includes("다이아")
-      );
+    if (selectedFilter === "Gold") {
+      return review.level >= 11;
+    }
+    if (selectedFilter === "Bronze") {
+      return review.level >= 1 && review.level < 6;
+    }
+    if (selectedFilter === "Silver") {
+      return review.level >= 6 && review.level < 11;
+    }
     return true;
   });
 
@@ -100,26 +97,6 @@ export default function AICodeReviewList() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedReview(null);
-  };
-
-  const getTierColor = (tier: string) => {
-    if (tier.includes("브론즈")) return "text-amber-700 bg-amber-100";
-    if (tier.includes("실버")) return "text-gray-700 bg-gray-200";
-    if (tier.includes("골드")) return "text-yellow-700 bg-yellow-100";
-    if (tier.includes("플래티넘")) return "text-teal-700 bg-teal-100";
-    if (tier.includes("다이아")) return "text-cyan-700 bg-cyan-100";
-    if (tier.includes("루비")) return "text-red-700 bg-red-100";
-    return "text-gray-700 bg-gray-100";
-  };
-
-  const getTierBadge = (tier: string) => {
-    return (
-      <span
-        className={`px-2 py-1 rounded-md text-xs font-medium ${getTierColor(tier)}`}
-      >
-        {tier}
-      </span>
-    );
   };
 
   return (
@@ -234,13 +211,13 @@ export default function AICodeReviewList() {
 
               <div className="divide-y divide-gray-100">
                 <AnimatePresence>
-                  {sortedReviews.map((review, index) => (
+                  {sortedReviews.map((review) => (
                     <motion.div
                       key={review.id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2, delay: index * 0.05 }}
+                      transition={{ duration: 0.2 }}
                       className={`grid grid-cols-12 gap-4 px-6 py-4 items-center cursor-pointer ${
                         review.isHighlighted ? "bg-indigo-50/30" : ""
                       } hover:bg-gray-50 transition-colors duration-150`}
@@ -248,44 +225,33 @@ export default function AICodeReviewList() {
                     >
                       <div className="col-span-6">
                         <div className="flex items-center flex-wrap gap-1.5">
-                          {review.difficulty && (
-                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-indigo-100 text-indigo-700 text-xs font-bold">
-                              {review.difficulty}
-                            </span>
-                          )}
                           <span className="text-gray-900 hover:text-indigo-600 font-medium line-clamp-1 ml-1">
                             {review.title}
                           </span>
                         </div>
-
-                        {review.tags && review.tags.length > 0 && (
-                          <div className="mt-1 flex flex-wrap gap-1 ml-1">
-                            {review.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="inline-block px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
                       </div>
 
                       <div className="col-span-1 text-center">
                         <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
-                          <Hash className="h-3 w-3 mr-1" />
                           {review.problemNumber}
                         </span>
                       </div>
 
                       <div className="col-span-2 text-center">
-                        {review.baekjoonTier &&
-                          getTierBadge(review.baekjoonTier)}
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full font-semibold ${getTierColor(review.level)}`}
+                        >
+                          {review.baekjoonTier}
+                        </span>
+                        {/* <span
+                          className={`text-xs px-2 py-1 rounded-full font-semibold ${getTierColor(review.level)}`}
+                        >
+                          {getTierName(review.level)}
+                        </span> */}
                       </div>
 
                       <div className="col-span-2 text-center">
-                        <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
+                        <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-50 text-gray-700">
                           <Tag className="h-3 w-3 mr-1" />
                           {review.algorithmType}
                         </span>
@@ -326,11 +292,6 @@ export default function AICodeReviewList() {
                     <div className="p-5">
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex items-center">
-                          {review.difficulty && (
-                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-indigo-100 text-indigo-700 text-xs font-bold mr-2">
-                              {review.difficulty}
-                            </span>
-                          )}
                           <h3 className="font-semibold text-gray-900 line-clamp-1">
                             {review.title}
                           </h3>
@@ -339,31 +300,22 @@ export default function AICodeReviewList() {
 
                       <div className="flex flex-wrap gap-2 mb-3">
                         <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
-                          <Hash className="h-3 w-3 mr-1" />
                           {review.problemNumber}
                         </span>
 
-                        {review.baekjoonTier &&
-                          getTierBadge(review.baekjoonTier)}
+                        <div className="col-span-2 text-center">
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full font-semibold ${getTierColor(review.level)}`}
+                          >
+                            {review.baekjoonTier}
+                          </span>
+                        </div>
 
-                        <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
+                        <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-50 text-gray-700">
                           <Tag className="h-3 w-3 mr-1" />
                           {review.algorithmType}
                         </span>
                       </div>
-
-                      {review.tags && review.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {review.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="inline-block px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
 
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">

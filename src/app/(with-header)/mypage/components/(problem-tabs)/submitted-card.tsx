@@ -1,6 +1,8 @@
 "use client";
 
 import { getLanguageColor } from "@/app/_util/get-language-color";
+import { getTierColor } from "@/app/_util/get-tier-color";
+import { getTierName } from "@/app/_util/get-tier-name";
 import React from "react";
 
 interface SubmittedProblemProps {
@@ -24,8 +26,10 @@ export default function SubmittedProblemTab({
             <h4 className="font-semibold text-gray-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
               {problem.title}
             </h4>
-            <span className="px-2 py-1 text-xs font-bold rounded-lg bg-indigo-100 text-indigo-700 border border-indigo-200">
-              Lv. {problem.level}
+            <span
+              className={`text-xs px-2 py-1 rounded-md font-semibold ${getTierColor(problem.level)}`}
+            >
+              {getTierName(problem.level)}
             </span>
           </div>
           <div className="flex items-center justify-between text-xs">
@@ -38,7 +42,7 @@ export default function SubmittedProblemTab({
             </span>
             <div className="flex items-center gap-1">
               {problem.submissionCount > 1 && (
-                <span className="px-2 py-1 rounded-md bg-indigo-100 text-indigo-700">
+                <span className="px-2 py-1 rounded-md  text-indigo-700">
                   {problem.submissionCount}회 제출
                 </span>
               )}

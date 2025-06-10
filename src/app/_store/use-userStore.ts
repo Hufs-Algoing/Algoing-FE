@@ -1,4 +1,3 @@
-// app/_store/use-user-store.ts
 import { create } from "zustand";
 import { MyInfoResponse } from "@/app/_api/user/getMyInfo";
 
