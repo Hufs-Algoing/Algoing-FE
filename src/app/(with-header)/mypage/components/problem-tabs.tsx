@@ -14,7 +14,7 @@ interface ProblemTabsProps {
   bookmarkedProblems: any[];
 }
 
-export function ProblemTabs({
+export default function ProblemTabs({
   activeTab,
   setActiveTab,
   solvedProblems,

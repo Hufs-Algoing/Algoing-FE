@@ -2,15 +2,28 @@
 
 import { useState, useRef } from "react";
 import StatsCards from "./components/stats-cards";
-import { ProblemTabs } from "./components/problem-tabs";
 import MypageIntroSection from "./components/intro-section";
 import { useSolvedProblems } from "@/app/hook/mypage/use-solved";
 import { useReviewedProblems } from "@/app/hook/mypage/use-reviewed";
 import { useBookmarkedProblems } from "@/app/hook/mypage/use-bookmarked";
 import { PageLoading } from "@/app/_components/loading";
 import { useSnapshotHistory } from "@/app/hook/use-snapshot";
-import CodeAnalysisChart from "./components/code-chart";
-import { PerformanceChart } from "./components/tag-chart";
+import dynamic from "next/dynamic";
+import SkeletonTabs from "./components/skelaton-tab";
+
+const CodeAnalysisChart = dynamic(() => import("./components/code-chart"), {
+  ssr: false,
+  loading: () => <div className="h-64 bg-gray-100 animate-pulse rounded-xl" />,
+});
+
+const PerformanceChart = dynamic(() => import("./components/tag-chart"), {
+  ssr: false,
+  loading: () => <div className="h-64 bg-gray-100 animate-pulse rounded-xl" />,
+});
+const ProblemTabs = dynamic(() => import("./components/problem-tabs"), {
+  ssr: false,
+  loading: () => <SkeletonTabs />,
+});
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("submitted");
