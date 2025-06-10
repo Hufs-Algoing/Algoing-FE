@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function RecommendedProblems() {
-  const userId = 3;
+  const userId = 2;
   const router = useRouter();
   const {
     data: recommendationData,

@@ -57,7 +57,7 @@ export default function AICodeReviewList() {
       isHighlighted: false,
       problemNumber: problem?.problemId,
       baekjoonTier: problem?.level
-        ? ["", "브론즈", "실버", "골드", "플래티넘", "다이아", "루비"][
+        ? ["브론즈", "실버", "골드", "플래티넘", "다이아", "루비"][
             Math.floor(problem.level / 5)
           ] +
           " " +
