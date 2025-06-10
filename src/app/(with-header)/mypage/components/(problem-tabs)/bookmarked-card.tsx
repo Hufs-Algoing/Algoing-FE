@@ -6,7 +6,7 @@ interface BookmarkedProblemProps {
   problems: any[];
 }
 
-export default function BookmarkedProblem({
+export default function BookmarkedProblemTab({
   problems,
 }: BookmarkedProblemProps) {
   return (

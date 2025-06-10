@@ -72,7 +72,6 @@ export default function MyPage() {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             solvedProblems={solvedProblems}
-            reviewedProblems={reviewedProblems}
             bookmarkedProblems={bookmarkedProblems}
           />
         </div>

@@ -1,7 +1,7 @@
 import { apiGet } from "../methods";
 
 export interface SolvedProblem {
-  submittedProblemId: number;
+  submittedProblemId: string;
   userId: number;
   problemId: number;
   title: string;

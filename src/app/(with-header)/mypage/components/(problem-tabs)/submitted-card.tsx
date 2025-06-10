@@ -8,7 +8,7 @@ interface SubmittedProblemProps {
   onClick: (problem: any) => void;
 }
 
-export default function SubmittedProblem({
+export default function SubmittedProblemTab({
   problems,
   onClick,
 }: SubmittedProblemProps) {
