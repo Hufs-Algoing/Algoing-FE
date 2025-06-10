@@ -11,7 +11,7 @@ interface RecommendSectionProps {
   problems: {
     problemId: number;
     title: string;
-    tag: string;
+    tagNames: string;
     level: number;
   }[];
 }
@@ -39,7 +39,7 @@ function RecommendSection({ title, icon, problems }: RecommendSectionProps) {
                 id={problem.problemId}
                 title={problem.title}
                 level={problem.level ?? 1}
-                tags={problem.tag?.split(",") ?? []}
+                tags={problem.tagNames?.split(",") ?? []}
                 isSolved={false}
                 onClick={() => router.push(`/code/${problem.problemId}`)}
               />

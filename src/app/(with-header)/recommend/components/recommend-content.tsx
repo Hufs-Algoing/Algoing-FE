@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import IntroSection from "./intro-section";
 import { useAllRecommendations } from "@/app/hook/recommend/use-all-recommend";
 import { PageLoading } from "@/app/_components/loading";
 import { BookOpen, Code, Sparkles } from "lucide-react";
 import { Suspense, lazy } from "react";
+import { mockMyInfo } from "../../main/page";
 
 export default function RecommendationContent() {
-  const [showSolved, setShowSolved] = useState(false);
-  const userId = 2;
+  const userId = 19;
   const { data: recommendationData, isLoading } = useAllRecommendations(
     userId ?? 0
   );
@@ -22,15 +21,15 @@ export default function RecommendationContent() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <IntroSection
-        // username={userId}
+        username={mockMyInfo.name}
         level={1}
         profileImage=""
         streak={0}
         totalPoints={0}
       />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-end items-center mb-8">
-          <span className="text-sm text-gray-600 mr-2">풀었던 문제 보기</span>
+          {/* <span className="text-sm text-gray-600 mr-2">풀었던 문제 보기</span>
           <button
             type="button"
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
@@ -43,7 +42,7 @@ export default function RecommendationContent() {
                 showSolved ? "translate-x-6" : "translate-x-1"
               }`}
             />
-          </button>
+          </button> */}
         </div>
         <>
           {isLoading ? (

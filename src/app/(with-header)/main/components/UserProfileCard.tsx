@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import ProgressFromSolved from "./Progress";
 import { getTierName } from "@/app/_util/get-tier-name";
 import { getTierColor } from "@/app/_util/get-tier-color";
+import { Sparkle } from "lucide-react";
 
 export default function UserProfileCard({ user }: { user: any }) {
   const tierName = getTierName(user.tier);
@@ -19,7 +20,6 @@ export default function UserProfileCard({ user }: { user: any }) {
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-purple-200/30 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-200/30 rounded-full blur-2xl"></div>
-
       <div className="relative flex flex-col md:flex-row items-center md:items-start gap-6">
         <div className="relative w-24 h-24">
           <Image
@@ -39,7 +39,7 @@ export default function UserProfileCard({ user }: { user: any }) {
             <span
               className={`text-xs px-2 py-1 rounded-full font-semibold shadow-sm ${tierColor}`}
             >
-              {tierName}
+              <Sparkle className="inline-block mr- w-4" /> {tierName}
             </span>
           </div>
 

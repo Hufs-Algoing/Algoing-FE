@@ -1,6 +1,8 @@
 "use client";
 
 import { Badge } from "@/app/_components/Badge";
+import { getTierColor } from "@/app/_util/get-tier-color";
+import { getTierName } from "@/app/_util/get-tier-name";
 import { useAllRecommendations } from "@/app/hook/recommend/use-all-recommend";
 import { useLogProblemClick } from "@/app/hook/recommend/use-log-click";
 import { Award } from "lucide-react";
@@ -8,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function RecommendedProblems() {
-  const userId = 2;
+  const userId = 19;
   const router = useRouter();
   const {
     data: recommendationData,
@@ -78,7 +80,11 @@ export default function RecommendedProblems() {
           className="bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col gap-2 hover:shadow-md transition-shadow"
         >
           <div className="flex items-center justify-between">
-            <Badge variant="outline">Lv. {problem.level}</Badge>
+            <span
+              className={`text-xs px-2 py-1 rounded-full font-semibold ${getTierColor(problem.level)}`}
+            >
+              {getTierName(problem.level)}
+            </span>
             <Badge variant="outline">+{problem.score} EXP</Badge>
           </div>
           <p className="text-sm font-semibold mt-1 truncate">

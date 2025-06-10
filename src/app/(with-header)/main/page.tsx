@@ -10,7 +10,7 @@ import { useLatestReviewedProblem } from "@/app/hook/problem/use-latest-reivewed
 import UserProfileCard from "./components/UserProfileCard";
 
 // myinfo 목데이터
-const mockMyInfo = {
+export const mockMyInfo = {
   bio: "",
   bojId: "an290an",
   createdAt: "2025-06-02T07:56:17.346838",
@@ -35,6 +35,7 @@ const isLocalEnvironment = () => {
 
 export default function UserDashboard() {
   const { data: apiMyInfo } = useMyInfo();
+  // const { userId } = useUserStore();
   const setUser = useUserStore((state) => state.setUser);
 
   // 로컬 환경에서는 목데이터 사용, 배포 환경에서는 API 데이터 사용
@@ -49,14 +50,14 @@ export default function UserDashboard() {
     }
   }, [myInfo, setUser]);
 
-  const { data: latestReview } = useLatestReviewedProblem(3);
+  const { data: latestReview } = useLatestReviewedProblem(19);
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
+    <div className="max-w-6xl mx-auto px-6 py-8">
       <UserProfileCard user={myInfo} />
       <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6">
         <div className="border dark:border-gray-700 rounded-xl p-4">
-          <ContributionCalendar userId={3} year={2025} month={6} />
+          <ContributionCalendar userId={19} year={2025} month={6} />
         </div>
 
         <div className="flex flex-col gap-4">
@@ -76,7 +77,7 @@ export default function UserDashboard() {
                       </span>
                     </div>
 
-                    <p className="text-sm text-gray-800 dark:text-gray-200 font-medium line-clamp-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-200 font-medium line-clamp-2">
                       {latestReview.summary}
                     </p>
 
