@@ -111,7 +111,7 @@ export default function Header() {
             className="relative"
           >
             <Image
-              src={picture || "/default.png"}
+              src={picture || "/profile5.png"}
               alt="프로필"
               width={50}
               height={50}

@@ -30,7 +30,7 @@ export default function UserDashboard() {
     solvedCount: 0,
     tier: 10,
     token: null,
-    userId: 5,
+    userId: 3,
     userPoint: 0,
     username: "컴퓨터공학손호언",
   };
@@ -43,10 +43,9 @@ export default function UserDashboard() {
   // const { data } = useSolvedProblems(3);
 
   useEffect(() => {
-    console.log("✅ useEffect 진입");
     if (myInfo) {
-      console.log("✅ /myinfo 응답값:", myInfo);
-      setUser(myInfo); // Zustand store에 저장
+      console.log(" /myinfo 응", myInfo);
+      setUser(myInfo);
     }
   }, [myInfo, setUser]);
 
