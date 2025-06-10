@@ -39,7 +39,7 @@ export default function UserProfileCard({ user }: { user: any }) {
         <div className="flex-1 text-center md:text-left">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-2 mb-2">
             <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              {user.handle}
+              {user.nickname}
             </h2>
             <span
               className={`text-xs px-2 py-1 rounded-full font-semibold shadow-sm ${tierColor}`}

@@ -77,7 +77,7 @@ export default function RecommendedProblems() {
         <div
           key={problem.problemId}
           onClick={() => handleProblemClick(problem.problemId)}
-          className="bg-gray-50 dark:bg-neutral-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col gap-2 hover:shadow-md transition-shadow"
+          className="bg-gray-50  p-4 rounded-lg border border-gray-200  flex flex-col gap-2 hover:shadow-md transition-shadow"
         >
           <div className="flex items-center justify-between">
             <span
