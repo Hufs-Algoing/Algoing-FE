@@ -9,8 +9,10 @@ import {
   CardTitle,
 } from "@/app/(with-header)/code/components/code/Card";
 
-import { Clock, MemoryStick, Tag, Trophy } from "lucide-react";
+import { Clock, MemoryStick, Tag, Trophy, Star } from "lucide-react";
 import { Badge } from "@/app/_components/Badge";
+import { useToggleBookmark } from "@/app/hook/problem/use-bookmark";
+import { useState } from "react";
 
 export default function ProblemInfo() {
   const params = useParams();
@@ -18,6 +20,20 @@ export default function ProblemInfo() {
 
   const { data, isLoading, isError } = useProblemDetail(problemId);
 
+  const [isBookmarked, setIsBookmarked] = useState(false); // 로컬 상태로만 관리
+
+  const toggleBookmarkMutation = useToggleBookmark();
+
+  const handleBookmarkToggle = () => {
+    toggleBookmarkMutation.mutate(
+      { userId: 3, problemId },
+      {
+        onSuccess: (res) => {
+          setIsBookmarked(res.result); // 서버에서 리턴된 등록 여부 기반으로 상태 반영
+        },
+      }
+    );
+  };
   if (isLoading) {
     return (
       <aside className="w-2/5 py-6 px-6">
@@ -77,7 +93,21 @@ export default function ProblemInfo() {
                 <Trophy className="w-3 h-3 mr-1" />
                 {getDifficultyText(data.level)} {data.level}
               </Badge>
-            </div>
+            </div>{" "}
+            <button
+              onClick={handleBookmarkToggle}
+              disabled={toggleBookmarkMutation.isPending}
+              className={`ml-3 p-2 rounded-full transition-all duration-200 hover:scale-110 ${
+                isBookmarked
+                  ? "text-yellow-500 hover:text-yellow-600 bg-yellow-50 hover:bg-yellow-100"
+                  : "text-gray-400 hover:text-yellow-500 bg-gray-50 hover:bg-yellow-50"
+              } ${toggleBookmarkMutation.isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+              title={isBookmarked ? "북마크 제거" : "북마크 추가"}
+            >
+              <Star
+                className={`w-7 h-7 transition-all duration-200 ${isBookmarked ? "fill-current" : "fill-none"}`}
+              />
+            </button>
           </div>
 
           {/* Constraints */}
