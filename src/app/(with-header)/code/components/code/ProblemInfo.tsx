@@ -61,7 +61,7 @@ export default function ProblemInfo() {
   };
 
   return (
-    <aside className="w-2/5 h-full min-h-0 py-6 border-r overflow-y-auto px-6 bg-gray-50/50">
+    <aside className="w-2/5 flex-shrink-0 overflow-y-auto max-h-screen pb-24 py-6 border-r px-6 bg-gray-50/50">
       <div className="space-y-6">
         {/* Header */}
         <div>
