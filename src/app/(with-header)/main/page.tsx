@@ -30,9 +30,9 @@ export default function UserDashboard() {
     solvedCount: 0,
     tier: 10,
     token: null,
-    nickname: "asdasd",
     userId: 5,
     userPoint: 0,
+    username: "컴퓨터공학손호언",
   };
 
   const { data: apiMyInfo } = useMyInfo();
@@ -58,7 +58,6 @@ export default function UserDashboard() {
         <>
           <UserProfileCard user={myInfo} />
 
-          {/* 나머지 콘텐츠 */}
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6">
             <div className="border dark:border-gray-700 rounded-xl p-4">
               <ContributionCalendar userId={3} year={2025} month={6} />
@@ -67,7 +66,6 @@ export default function UserDashboard() {
             <div className="flex flex-col gap-6">
               <div className="relative overflow-hidden border-0 rounded-2xl bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 shadow-lg ">
                 <div className="relative p-6 h-[250px] flex flex-col">
-                  {/* 헤더 */}
                   <div className="flex items-center gap-3 mb-4">
                     <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg shadow-md">
                       <FaRobot className="w-5 h-5 text-white" />

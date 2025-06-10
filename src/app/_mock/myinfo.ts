@@ -11,5 +11,6 @@ export const mockMyInfo = {
   tier: 10,
   token: null,
   userId: 5,
+  username: "컴퓨터공학손호언",
   userPoint: 0,
 };

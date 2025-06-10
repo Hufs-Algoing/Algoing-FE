@@ -18,5 +18,6 @@ export const useUserStore = create<UserState>((set) => ({
   solvedCount: 0,
   userPoint: 0,
   createdAt: "",
+  username: "",
   setUser: (user) => set({ ...user }),
 }));
