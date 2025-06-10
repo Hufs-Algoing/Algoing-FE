@@ -8,6 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/(with-header)/code/components/code/Card";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { getLanguageForHighlighter } from "@/app/_util/get-language-highlight";
 
 import {
   Code,
@@ -142,10 +145,32 @@ export function CodeReviewModal({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100 font-mono whitespace-pre-wrap">
-                      <code>{review.code}</code>
-                    </pre>
+                  <div className="bg-slate-900 rounded-lg overflow-hidden">
+                    <SyntaxHighlighter
+                      language={getLanguageForHighlighter(
+                        review.language || "text"
+                      )}
+                      style={oneDark}
+                      customStyle={{
+                        margin: 0,
+                        padding: "1.5rem",
+                        fontSize: "0.875rem",
+                        lineHeight: "1.5",
+                        borderRadius: "0",
+                        background: "transparent",
+                      }}
+                      showLineNumbers={true}
+                      lineNumberStyle={{
+                        color: "#6b7280",
+                        fontSize: "0.75rem",
+                        paddingRight: "1rem",
+                        minWidth: "2.5rem",
+                      }}
+                      wrapLines={true}
+                      wrapLongLines={true}
+                    >
+                      {review.code || ""}
+                    </SyntaxHighlighter>
                   </div>
                 </CardContent>
               </Card>

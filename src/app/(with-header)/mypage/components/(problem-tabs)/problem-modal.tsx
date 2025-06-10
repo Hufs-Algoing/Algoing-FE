@@ -4,6 +4,9 @@ import { useState } from "react";
 import { X, ExternalLink, Copy, Check } from "lucide-react";
 import { getLanguageColor } from "@/app/_util/get-language-color";
 import { SolvedProblem } from "@/app/_api/mypage/solved";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { getLanguageForHighlighter } from "@/app/_util/get-language-highlight";
 
 interface Submission extends SolvedProblem {
   submittedDate: string;
@@ -136,10 +139,30 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
                 {copied ? "복사됨" : "복사"}
               </button>
             </div>
-            <div className="bg-slate-900 rounded-lg p-4 overflow-x-auto">
-              <pre className="text-gray-100 font-mono text-sm">
-                <code>{current.answer}</code>
-              </pre>
+            <div className="bg-slate-900 rounded-lg overflow-hidden">
+              <SyntaxHighlighter
+                language={getLanguageForHighlighter(current.language || "text")}
+                style={oneDark}
+                customStyle={{
+                  margin: 0,
+                  padding: "1.5rem",
+                  fontSize: "0.875rem",
+                  lineHeight: "1.5",
+                  borderRadius: "0",
+                  background: "transparent",
+                }}
+                showLineNumbers={true}
+                lineNumberStyle={{
+                  color: "#6b7280",
+                  fontSize: "0.75rem",
+                  paddingRight: "1rem",
+                  minWidth: "2.5rem",
+                }}
+                wrapLines={true}
+                wrapLongLines={true}
+              >
+                {current.answer || ""}
+              </SyntaxHighlighter>
             </div>
           </div>
         </div>
