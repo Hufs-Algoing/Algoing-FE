@@ -3,6 +3,7 @@
 import ProblemCard from "../components/problem-card";
 import Carousel from "../components/carousel";
 import { useRouter } from "next/navigation";
+import { memo } from "react";
 
 interface RecommendSectionProps {
   title: string;
@@ -15,11 +16,7 @@ interface RecommendSectionProps {
   }[];
 }
 
-export function RecommendSection({
-  title,
-  icon,
-  problems,
-}: RecommendSectionProps) {
+function RecommendSection({ title, icon, problems }: RecommendSectionProps) {
   const router = useRouter();
   if (!Array.isArray(problems)) return null;
 
@@ -53,3 +50,4 @@ export function RecommendSection({
     </section>
   );
 }
+export default memo(RecommendSection);

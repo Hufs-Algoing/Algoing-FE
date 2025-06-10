@@ -124,18 +124,16 @@ export default function AICodeReviewList() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Header */}
         <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div className="pl-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
                 AI 코드리뷰
               </h1>
               <p className="text-sm text-gray-600 mt-1 max-w-2xl">
-                AI가 당신의 코드를 분석하고 개선점을 제안합니다. 코드 품질,
-                성능, 보안 측면에서 전문적인 피드백을 받아보세요.
+                AI가 당신의 코드를 분석하고 개선점을 제안합니다. <br />
+                코드 품질, 성능, 보안 측면에서 전문적인 피드백을 받아보세요.
               </p>
             </div>
           </div>

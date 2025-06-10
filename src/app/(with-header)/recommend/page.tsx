@@ -1,7 +1,23 @@
+import { getAllRecommendations } from "@/app/_api/recommend/get-all";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import RecommendationContent from "./components/recommend-content";
 
-export const dynamic = "force-dynamic";
+export default async function RecommendationPage() {
+  const userId = 3;
 
-export default function RecommendPage() {
-  return <RecommendationContent />;
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["recommend-all", userId],
+    queryFn: () => getAllRecommendations(userId),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <RecommendationContent />
+    </HydrationBoundary>
+  );
 }

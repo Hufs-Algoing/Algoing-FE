@@ -1,20 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Send, Bookmark } from "lucide-react";
 import { groupProblemsById } from "@/app/_util/group-problem-id";
-import SubmittedProblem from "./(problem-tabs)/submitted-card";
-import BookmarkedProblem from "./(problem-tabs)/bookmarked-card";
 import ProblemModal from "./(problem-tabs)/problem-modal";
+import { SolvedProblem } from "@/app/_api/mypage/solved";
+import { BookmarkedProblem } from "@/app/_api/mypage/bookmarks";
+import BookmarkedProblemTab from "./(problem-tabs)/bookmarked-card";
+import SubmittedProblemTab from "./(problem-tabs)/submitted-card";
 interface ProblemTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  solvedProblems: any[];
-  reviewedProblems: any[];
-  bookmarkedProblems: any[];
+  solvedProblems: SolvedProblem[];
+  bookmarkedProblems: BookmarkedProblem[];
 }
 
-export function ProblemTabs({
+export default function ProblemTabs({
   activeTab,
   setActiveTab,
   solvedProblems,
@@ -22,9 +23,12 @@ export function ProblemTabs({
 }: ProblemTabsProps) {
   const [selectedProblem, setSelectedProblem] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [, setCopied] = useState(false);
 
-  const groupProblems = groupProblemsById(solvedProblems);
+  const groupProblems = useMemo(
+    () => groupProblemsById(solvedProblems),
+    [solvedProblems]
+  );
 
   const openModal = (problem: any) => {
     if (!problem) return;
@@ -39,8 +43,8 @@ export function ProblemTabs({
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
-    document.body.style.overflow = "";
+    setSelectedProblem(null);
+    setCopied(false);
   };
 
   return (
@@ -82,22 +86,15 @@ export function ProblemTabs({
 
         <div className="p-6">
           {activeTab === "submitted" ? (
-            <SubmittedProblem problems={groupProblems} onClick={openModal} />
+            <SubmittedProblemTab problems={groupProblems} onClick={openModal} />
           ) : (
-            <BookmarkedProblem problems={bookmarkedProblems} />
+            <BookmarkedProblemTab problems={bookmarkedProblems} />
           )}
         </div>
       </div>
 
       {isModalOpen && selectedProblem && (
-        <ProblemModal
-          problem={selectedProblem}
-          copied={copied}
-          setCopied={setCopied}
-          setProblem={setSelectedProblem}
-          closeModal={closeModal}
-          onClose={closeModal}
-        />
+        <ProblemModal problem={selectedProblem} onClose={closeModal} />
       )}
     </>
   );

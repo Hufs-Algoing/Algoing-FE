@@ -3,30 +3,56 @@
 import { useState } from "react";
 import { X, ExternalLink, Copy, Check } from "lucide-react";
 import { getLanguageColor } from "@/app/_util/get-language-color";
+import { SolvedProblem } from "@/app/_api/mypage/solved";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { getLanguageForHighlighter } from "@/app/_util/get-language-highlight";
+
+interface Submission extends SolvedProblem {
+  submittedDate: string;
+  language: string;
+  answer: string;
+}
+
+interface ModalProblem {
+  title: string;
+  level: number;
+  url?: string;
+  submissionCount?: number;
+  submittedProblemId?: number;
+  submissions?: Submission[];
+}
 
 interface ProblemModalProps {
-  problem: any;
+  problem: ModalProblem;
   onClose: () => void;
-  copied: boolean;
-  setCopied: React.Dispatch<React.SetStateAction<boolean>>;
-  setProblem: React.Dispatch<any>;
-  closeModal: () => void;
 }
 
 export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
   const [copied, setCopied] = useState(false);
   const [currentSubmissionIndex, setCurrentSubmissionIndex] = useState(0);
 
-  const current = problem.submissions?.[currentSubmissionIndex] ?? problem;
+  const current = problem.submissions?.[currentSubmissionIndex] ?? null;
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("복사 실패:", err);
+    }
   };
 
+  if (!current) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
       <div className="absolute inset-0 bg-transparent" onClick={onClose} />
       <div
         className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden z-10"
@@ -46,10 +72,13 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
                 {current.language}
               </span>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mt-2">
+            <h3
+              id="modal-title"
+              className="text-xl font-bold text-gray-900 mt-2"
+            >
               {problem.title}
             </h3>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-600 mt-1">
               제출일: {current.submittedDate}
             </p>
           </div>
@@ -63,7 +92,7 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
         </div>
 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
-          {problem.submissions?.length > 1 && (
+          {problem.submissions && problem.submissions.length > 1 && (
             <div className="mb-4 flex items-center justify-between">
               <h4 className="text-md font-medium text-gray-700">
                 총 {problem.submissionCount}회 제출
@@ -78,6 +107,8 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
                         ? "bg-indigo-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
+                    aria-label={`${idx + 1}번째 제출 보기`}
+                    aria-pressed={currentSubmissionIndex === idx}
                   >
                     {idx + 1}
                   </button>
@@ -85,6 +116,7 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
               </div>
             </div>
           )}
+
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
@@ -107,20 +139,38 @@ export default function ProblemModal({ problem, onClose }: ProblemModalProps) {
                 {copied ? "복사됨" : "복사"}
               </button>
             </div>
-            <div className="bg-slate-900 rounded-lg p-4 overflow-x-auto">
-              <pre className="text-gray-100 font-mono text-sm">
-                <code>{current.answer}</code>
-              </pre>
+            <div className="bg-slate-900 rounded-lg overflow-hidden">
+              <SyntaxHighlighter
+                language={getLanguageForHighlighter(current.language || "text")}
+                style={oneDark}
+                customStyle={{
+                  margin: 0,
+                  padding: "1.5rem",
+                  fontSize: "0.875rem",
+                  lineHeight: "1.5",
+                  borderRadius: "0",
+                  background: "transparent",
+                }}
+                showLineNumbers={true}
+                lineNumberStyle={{
+                  color: "#6b7280",
+                  fontSize: "0.75rem",
+                  paddingRight: "1rem",
+                  minWidth: "2.5rem",
+                }}
+                wrapLines={true}
+                wrapLongLines={true}
+              >
+                {current.answer || ""}
+              </SyntaxHighlighter>
             </div>
           </div>
         </div>
 
-        {/* 푸터 */}
         <div className="flex items-center justify-between p-4 border-t border-gray-200 bg-gray-50">
           <div className="text-sm text-gray-500">
-            {problem.submittedProblemId
-              ? `제출 ID: ${problem.submittedProblemId}`
-              : ""}
+            {problem.submittedProblemId &&
+              `제출 ID: ${problem.submittedProblemId}`}
           </div>
           {problem.url && (
             <a

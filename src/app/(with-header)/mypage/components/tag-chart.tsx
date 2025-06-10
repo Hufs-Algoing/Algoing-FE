@@ -14,7 +14,7 @@ interface Props {
   userId: number;
 }
 
-export function PerformanceChart({ userId }: Props) {
+export default function PerformanceChart({ userId }: Props) {
   const { data: solvedProblems = [] } = useSolvedProblems(userId);
 
   const tagMap = new Map<string, number>();
@@ -59,7 +59,6 @@ export function PerformanceChart({ userId }: Props) {
       <p className="text-sm text-slate-500 mb-4">총 {total}개 문제</p>
 
       <div className="flex flex-col items-center gap-6">
-        {/* 파이 차트 */}
         <div className="w-full max-w-xs">
           <ResponsiveContainer width="100%" height={240}>
             <RePieChart>
@@ -83,8 +82,6 @@ export function PerformanceChart({ userId }: Props) {
             </RePieChart>
           </ResponsiveContainer>
         </div>
-        {/* 범례 (가로 레이아웃) */}
-        {/* 범례 (가로 레이아웃 + 가장 많이 푼 태그 강조) */}
         <div className="w-full flex flex-wrap justify-center gap-4 mt-4">
           {chartData.map((entry, index) => {
             const isTopTag = index === 0;
