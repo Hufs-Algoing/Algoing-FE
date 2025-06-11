@@ -15,6 +15,6 @@ export const useLatestReviewedProblem = (userId: number) => {
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )[0];
     },
-    enabled: !!userId,
+    enabled: !!userId && userId > 0,
   });
 };
