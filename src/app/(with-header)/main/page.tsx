@@ -23,8 +23,10 @@ export default function UserDashboard() {
     }
   }, [myInfo, setUser]);
 
-  const { data: latestReview } = useLatestReviewedProblem(userId);
-
+  const shouldFetchLatestReview = !!userId && userId !== 0;
+  const { data: latestReview } = useLatestReviewedProblem(
+    shouldFetchLatestReview ? userId : null
+  );
   return (
     <div className="max-w-6xl mx-auto px-6 py-6">
       {myInfo ? (
