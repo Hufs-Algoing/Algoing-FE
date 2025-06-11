@@ -24,7 +24,7 @@ export default function WithHeaderLayout({
   return (
     <>
       <Header />
-      <link rel="preload" href="/app/global.css" as="style" />
+      <link rel="preload" href="@/app/global.css" as="style" />
       <main className="pt-[72px]">{children}</main>
     </>
   );
